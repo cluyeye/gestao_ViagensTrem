@@ -10,6 +10,23 @@ package modelo;
  *
  * @author coxe
  */
-public class EngenheiroModelo {
+public class EngenheiroModelo 
+{
+    int pk_engenheiro;
+    PessoaModelo pessoa;
+
+    public EngenheiroModelo() {
+    }
+
+    public EngenheiroModelo(int pk_engenheiro, PessoaModelo pessoa) {
+        this.pk_engenheiro = pk_engenheiro;
+        this.pessoa = pessoa;
+    }
+
+    @Override
+    public String toString() {
+        return "EngenheiroModelo{" + "pk_engenheiro=" + pk_engenheiro + ", pessoa=" + pessoa + '}';
+    }
+       
     
 }
