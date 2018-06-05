@@ -12,8 +12,8 @@ package modelo;
  */
 public class EngenheiroModelo 
 {
-    int pk_engenheiro;
-    PessoaModelo pessoa;
+    private int pk_engenheiro;
+    private PessoaModelo pessoa;
 
     public EngenheiroModelo() {
     }
@@ -22,10 +22,28 @@ public class EngenheiroModelo
         this.pk_engenheiro = pk_engenheiro;
         this.pessoa = pessoa;
     }
+    
+    
 
     @Override
     public String toString() {
         return "EngenheiroModelo{" + "pk_engenheiro=" + pk_engenheiro + ", pessoa=" + pessoa + '}';
+    }
+
+    public int getPk_engenheiro() {
+        return pk_engenheiro;
+    }
+
+    public void setPk_engenheiro(int pk_engenheiro) {
+        this.pk_engenheiro = pk_engenheiro;
+    }
+
+    public PessoaModelo getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(PessoaModelo pessoa) {
+        this.pessoa = pessoa;
     }
        
     

@@ -11,31 +11,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.SexoModelo;
+import modelo.PaisModelo;
+import modelo.ProvinciaModelo;
 import util.Conexao;
 
 /**
  *
  * @author coxe
  */
-public class SexoDAO 
+public class ProvinciaDAO 
 {
-    private SexoModelo sexo;
+    private ProvinciaModelo provincia;
     private PreparedStatement preparedStatement;
 
-    public SexoDAO() { }
+    public ProvinciaDAO() { }
 
-    public SexoDAO(SexoModelo sexo)
+    public ProvinciaDAO(ProvinciaModelo provincia)
     {
-        this.sexo = sexo;
+        this.provincia = provincia;
     }
       
-    public ArrayList<SexoModelo> listar()
+    public ArrayList<ProvinciaModelo> listar()
     {
-        ArrayList<SexoModelo> lista = new ArrayList<SexoModelo>();
-        SexoModelo sexo;
+        ArrayList<ProvinciaModelo> lista = new ArrayList<ProvinciaModelo>();
+        ProvinciaModelo provincia;
         
-        String query ="SELECT * FROM sexo";
+        String query ="SELECT * FROM provincia";
         
         try
         {
@@ -43,15 +44,18 @@ public class SexoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            sexo = new SexoModelo();
+            provincia = new ProvinciaModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
-                sexo.setPk_sexo(rs.getInt("pk_sexo"));
-                sexo.setNome(rs.getString("nome"));
-                lista.add(sexo);
+                provincia.setPk_provincia(rs.getInt("pk_provincia"));
+                provincia.setPais(
+                        new PaisDAO().getByID(rs.getInt("fk_pais"))                        
+                );
+                provincia.setNome(rs.getString("nome"));
+                lista.add(provincia);
             }
 
         }catch(Exception e)
@@ -63,28 +67,31 @@ public class SexoDAO
     
     }
       
-    public SexoModelo getByID(int id)
+    public ProvinciaModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM sexo WHERE pk_sexo = ?";
+        String query ="SELECT * FROM provincia WHERE pk_provincia = ?";
         
         try
         {
-            sexo.setPk_sexo(id);
+            provincia.setPk_provincia(id);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
+            preparedStatement.setInt(1, provincia.getPk_provincia());
                         
-            sexo = new SexoModelo();
+            provincia = new ProvinciaModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
-            sexo.setPk_sexo(rs.getInt("pk_sexo"));
-            sexo.setNome(rs.getString("nome"));
+            provincia.setPk_provincia(rs.getInt("pk_provincia"));
+            provincia.setPais(
+                    new PaisDAO().getByID(rs.getInt("fk_pais"))                        
+            );
+            provincia.setNome(rs.getString("nome"));
          
             Conexao.fecharConexao();
         
-            return sexo;
+            return provincia;
         
         }catch(Exception e)
         {
@@ -96,11 +103,11 @@ public class SexoDAO
     }
     
      
-    public Boolean inserir(SexoModelo sexo)
+    public Boolean inserir(ProvinciaModelo provincia)
     {
-        if ( sexoNaoExiste())
+        if ( provinciaNaoExiste())
         {
-            String query = "INSERT INTO sexo(nome) VALUES(?)";
+            String query = "INSERT INTO provincia(nome) VALUES(?)";
 
             try
             {
@@ -108,7 +115,7 @@ public class SexoDAO
                     Conexao.getConexao ();
 
                 preparedStatement = Conexao.conexao.prepareStatement(query);
-                preparedStatement.setString(1, sexo.getNome());
+                preparedStatement.setString(1, provincia.getNome());
 
                 preparedStatement.execute();
 
@@ -126,9 +133,9 @@ public class SexoDAO
     
     }
      
-    public Boolean editar(SexoModelo sexo)
+    public Boolean editar(ProvinciaModelo provincia)
     {
-        String query = "UPDATE sexo SET nome = ? WHERE pk_sexo = ?"; 
+        String query = "UPDATE provincia SET nome = ? WHERE pk_provincia = ?"; 
 
         try
         {
@@ -139,8 +146,8 @@ public class SexoDAO
             JOptionPane.showMessageDialog(null, query);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, sexo.getNome());
-            preparedStatement.setInt(2, sexo.getPk_sexo());
+            preparedStatement.setString(1, provincia.getNome());
+            preparedStatement.setInt(2, provincia.getPk_provincia());
 
             preparedStatement.execute();
 
@@ -156,14 +163,14 @@ public class SexoDAO
     
     }
      
-    public void eliminar (SexoModelo sexo)
+    public void eliminar (ProvinciaModelo provincia)
     {
-        String query = "DELETE FROM sexo WHERE pk_sexo = ?"; 
+        String query = "DELETE FROM provincia WHERE pk_provincia = ?"; 
         
         try
         {      
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
+            preparedStatement.setInt(1, provincia.getPk_provincia());
 
             preparedStatement.execute();        }
         catch(Exception e) {
@@ -174,9 +181,9 @@ public class SexoDAO
     
     }
     
-    public boolean sexoNaoExiste ()
+    public boolean provinciaNaoExiste ()
     {
-        String query = "SELECT pk_sexo FROM sexo WHERE nome = ?";
+        String query = "SELECT pk_provincia FROM provincia WHERE nome = ?";
         
         try
         {
@@ -184,13 +191,13 @@ public class SexoDAO
                 Conexao.getConexao ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, sexo.getNome());
+            preparedStatement.setString(1, provincia.getNome());
             
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet resultados = preparedStatement.executeQuery();
             
-            rs.next ();
+            resultados.next ();
             
-            return (rs.getInt(1) == 0);
+            return (resultados.getInt(1) == 0);
         }
         
         catch (SQLException excepcao)
@@ -201,19 +208,19 @@ public class SexoDAO
         return true;
     }
     
-    public int getIdPais( String nome )
+    public int getIdProvincia( String nome )
     {
         try
         {
             
-            String query = "SELECT pk_sexo FROM sexo WHERE nome = ?";
+            String query = "SELECT pk_provincia FROM provincia WHERE nome = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (sexo == null)
-                sexo = new SexoModelo ();
+            if (provincia == null)
+                provincia = new ProvinciaModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setString(1, nome);
@@ -224,10 +231,10 @@ public class SexoDAO
             
             if (resultados.getInt(1) != 0)
             {
-                sexo.setPk_sexo(resultados.getInt(1) );
+                provincia.setPk_provincia(resultados.getInt(1) );
             }
             
-            return sexo.getPk_sexo();
+            return provincia.getPk_provincia();
         }
         
         catch (SQLException excepcao)
@@ -243,14 +250,14 @@ public class SexoDAO
         try
         {
             
-            String query = "SELECT nome FROM sexo WHERE pk_sexo = ?";
+            String query = "SELECT nome FROM provincia WHERE pk_provincia = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (sexo == null)
-                sexo = new SexoModelo ();
+            if (provincia == null)
+                provincia = new ProvinciaModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setInt(1, codigo);
@@ -261,10 +268,10 @@ public class SexoDAO
             
             if (resultados.getString(1) != null)
             {
-                sexo.setNome(resultados.getString(1) );
+                provincia.setNome(resultados.getString(1) );
             }
             
-            return sexo.getNome();
+            return provincia.getNome();
         }
         
         catch (SQLException excepcao)

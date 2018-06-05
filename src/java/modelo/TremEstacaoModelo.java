@@ -14,22 +14,22 @@ public class TremEstacaoModelo
 {
     private TremModelo trem;
     private EstacaoModelo estacao;
-    private TrajectoSentidoModelo trajectoSentido;
+    private TipoViagemModelo trajectoSentido;
 
     public TremEstacaoModelo() {
     }
 
-    public TremEstacaoModelo(TremModelo trem, EstacaoModelo estacao, TrajectoSentidoModelo trajectoSentido) {
+    public TremEstacaoModelo(TremModelo trem, EstacaoModelo estacao, TipoViagemModelo trajectoSentido) {
         this.trem = trem;
         this.estacao = estacao;
         this.trajectoSentido = trajectoSentido;
     }
 
-    public TrajectoSentidoModelo getTrajectoSentido() {
+    public TipoViagemModelo getTrajectoSentido() {
         return trajectoSentido;
     }
 
-    public void setTrajectoSentido(TrajectoSentidoModelo trajectoSentido) {
+    public void setTrajectoSentido(TipoViagemModelo trajectoSentido) {
         this.trajectoSentido = trajectoSentido;
     }
 

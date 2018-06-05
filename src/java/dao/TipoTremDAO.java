@@ -11,31 +11,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.SexoModelo;
+import modelo.TipoTremModelo;
 import util.Conexao;
 
 /**
  *
  * @author coxe
  */
-public class SexoDAO 
+public class TipoTremDAO 
 {
-    private SexoModelo sexo;
+    private TipoTremModelo tipotrem;
     private PreparedStatement preparedStatement;
 
-    public SexoDAO() { }
+    public TipoTremDAO() { }
 
-    public SexoDAO(SexoModelo sexo)
+    public TipoTremDAO(TipoTremModelo tipotrem)
     {
-        this.sexo = sexo;
+        this.tipotrem = tipotrem;
     }
       
-    public ArrayList<SexoModelo> listar()
+    public ArrayList<TipoTremModelo> listar()
     {
-        ArrayList<SexoModelo> lista = new ArrayList<SexoModelo>();
-        SexoModelo sexo;
+        ArrayList<TipoTremModelo> lista = new ArrayList<TipoTremModelo>();
+        TipoTremModelo tipotrem;
         
-        String query ="SELECT * FROM sexo";
+        String query ="SELECT * FROM tipotrem";
         
         try
         {
@@ -43,15 +43,15 @@ public class SexoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            sexo = new SexoModelo();
+            tipotrem = new TipoTremModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
-                sexo.setPk_sexo(rs.getInt("pk_sexo"));
-                sexo.setNome(rs.getString("nome"));
-                lista.add(sexo);
+                tipotrem.setPk_tipotrem(rs.getInt("pk_tipotrem"));
+                tipotrem.setNome(rs.getString("nome"));
+                lista.add(tipotrem);
             }
 
         }catch(Exception e)
@@ -63,28 +63,28 @@ public class SexoDAO
     
     }
       
-    public SexoModelo getByID(int id)
+    public TipoTremModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM sexo WHERE pk_sexo = ?";
+        String query ="SELECT * FROM tipotrem WHERE pk_tipotrem = ?";
         
         try
         {
-            sexo.setPk_sexo(id);
+            tipotrem.setPk_tipotrem(id);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
+            preparedStatement.setInt(1, tipotrem.getPk_tipotrem());
                         
-            sexo = new SexoModelo();
+            tipotrem = new TipoTremModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
-            sexo.setPk_sexo(rs.getInt("pk_sexo"));
-            sexo.setNome(rs.getString("nome"));
+            tipotrem.setPk_tipotrem(rs.getInt("pk_tipotrem"));
+            tipotrem.setNome(rs.getString("nome"));
          
             Conexao.fecharConexao();
         
-            return sexo;
+            return tipotrem;
         
         }catch(Exception e)
         {
@@ -96,11 +96,11 @@ public class SexoDAO
     }
     
      
-    public Boolean inserir(SexoModelo sexo)
+    public Boolean inserir(TipoTremModelo tipotrem)
     {
-        if ( sexoNaoExiste())
+        if ( tipotremNaoExiste())
         {
-            String query = "INSERT INTO sexo(nome) VALUES(?)";
+            String query = "INSERT INTO tipotrem(nome) VALUES(?)";
 
             try
             {
@@ -108,7 +108,7 @@ public class SexoDAO
                     Conexao.getConexao ();
 
                 preparedStatement = Conexao.conexao.prepareStatement(query);
-                preparedStatement.setString(1, sexo.getNome());
+                preparedStatement.setString(1, tipotrem.getNome());
 
                 preparedStatement.execute();
 
@@ -126,9 +126,9 @@ public class SexoDAO
     
     }
      
-    public Boolean editar(SexoModelo sexo)
+    public Boolean editar(TipoTremModelo tipotrem)
     {
-        String query = "UPDATE sexo SET nome = ? WHERE pk_sexo = ?"; 
+        String query = "UPDATE tipotrem SET nome = ? WHERE pk_tipotrem = ?"; 
 
         try
         {
@@ -139,8 +139,8 @@ public class SexoDAO
             JOptionPane.showMessageDialog(null, query);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, sexo.getNome());
-            preparedStatement.setInt(2, sexo.getPk_sexo());
+            preparedStatement.setString(1, tipotrem.getNome());
+            preparedStatement.setInt(2, tipotrem.getPk_tipotrem());
 
             preparedStatement.execute();
 
@@ -156,14 +156,14 @@ public class SexoDAO
     
     }
      
-    public void eliminar (SexoModelo sexo)
+    public void eliminar (TipoTremModelo tipotrem)
     {
-        String query = "DELETE FROM sexo WHERE pk_sexo = ?"; 
+        String query = "DELETE FROM tipotrem WHERE pk_tipotrem = ?"; 
         
         try
         {      
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
+            preparedStatement.setInt(1, tipotrem.getPk_tipotrem());
 
             preparedStatement.execute();        }
         catch(Exception e) {
@@ -174,9 +174,9 @@ public class SexoDAO
     
     }
     
-    public boolean sexoNaoExiste ()
+    public boolean tipotremNaoExiste ()
     {
-        String query = "SELECT pk_sexo FROM sexo WHERE nome = ?";
+        String query = "SELECT pk_tipotrem FROM tipotrem WHERE nome = ?";
         
         try
         {
@@ -184,13 +184,13 @@ public class SexoDAO
                 Conexao.getConexao ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, sexo.getNome());
+            preparedStatement.setString(1, tipotrem.getNome());
             
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet resultados = preparedStatement.executeQuery();
             
-            rs.next ();
+            resultados.next ();
             
-            return (rs.getInt(1) == 0);
+            return (resultados.getInt(1) == 0);
         }
         
         catch (SQLException excepcao)
@@ -201,19 +201,19 @@ public class SexoDAO
         return true;
     }
     
-    public int getIdPais( String nome )
+    public int getIdTipotrem( String nome )
     {
         try
         {
             
-            String query = "SELECT pk_sexo FROM sexo WHERE nome = ?";
+            String query = "SELECT pk_tipotrem FROM tipotrem WHERE nome = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (sexo == null)
-                sexo = new SexoModelo ();
+            if (tipotrem == null)
+                tipotrem = new TipoTremModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setString(1, nome);
@@ -224,10 +224,10 @@ public class SexoDAO
             
             if (resultados.getInt(1) != 0)
             {
-                sexo.setPk_sexo(resultados.getInt(1) );
+                tipotrem.setPk_tipotrem(resultados.getInt(1) );
             }
             
-            return sexo.getPk_sexo();
+            return tipotrem.getPk_tipotrem();
         }
         
         catch (SQLException excepcao)
@@ -243,14 +243,14 @@ public class SexoDAO
         try
         {
             
-            String query = "SELECT nome FROM sexo WHERE pk_sexo = ?";
+            String query = "SELECT nome FROM tipotrem WHERE pk_tipotrem = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (sexo == null)
-                sexo = new SexoModelo ();
+            if (tipotrem == null)
+                tipotrem = new TipoTremModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setInt(1, codigo);
@@ -261,10 +261,10 @@ public class SexoDAO
             
             if (resultados.getString(1) != null)
             {
-                sexo.setNome(resultados.getString(1) );
+                tipotrem.setNome(resultados.getString(1) );
             }
             
-            return sexo.getNome();
+            return tipotrem.getNome();
         }
         
         catch (SQLException excepcao)
@@ -273,5 +273,5 @@ public class SexoDAO
         }
 
         return null;
-    }    
+    }
 }

@@ -11,31 +11,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.SexoModelo;
+import modelo.TipoEstacaoModelo;
 import util.Conexao;
 
 /**
  *
  * @author coxe
  */
-public class SexoDAO 
+public class TipoEstacaoDAO 
 {
-    private SexoModelo sexo;
+    private TipoEstacaoModelo tipoestacao;
     private PreparedStatement preparedStatement;
 
-    public SexoDAO() { }
+    public TipoEstacaoDAO() { }
 
-    public SexoDAO(SexoModelo sexo)
+    public TipoEstacaoDAO(TipoEstacaoModelo tipoestacao)
     {
-        this.sexo = sexo;
+        this.tipoestacao = tipoestacao;
     }
       
-    public ArrayList<SexoModelo> listar()
+    public ArrayList<TipoEstacaoModelo> listar()
     {
-        ArrayList<SexoModelo> lista = new ArrayList<SexoModelo>();
-        SexoModelo sexo;
+        ArrayList<TipoEstacaoModelo> lista = new ArrayList<TipoEstacaoModelo>();
+        TipoEstacaoModelo tipoestacao;
         
-        String query ="SELECT * FROM sexo";
+        String query ="SELECT * FROM tipoestacao";
         
         try
         {
@@ -43,15 +43,15 @@ public class SexoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            sexo = new SexoModelo();
+            tipoestacao = new TipoEstacaoModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
-                sexo.setPk_sexo(rs.getInt("pk_sexo"));
-                sexo.setNome(rs.getString("nome"));
-                lista.add(sexo);
+                tipoestacao.setPk_tipoestacao(rs.getInt("pk_tipoestacao"));
+                tipoestacao.setNome(rs.getString("nome"));
+                lista.add(tipoestacao);
             }
 
         }catch(Exception e)
@@ -63,28 +63,28 @@ public class SexoDAO
     
     }
       
-    public SexoModelo getByID(int id)
+    public TipoEstacaoModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM sexo WHERE pk_sexo = ?";
+        String query ="SELECT * FROM tipoestacao WHERE pk_tipoestacao = ?";
         
         try
         {
-            sexo.setPk_sexo(id);
+            tipoestacao.setPk_tipoestacao(id);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
+            preparedStatement.setInt(1, tipoestacao.getPk_tipoestacao());
                         
-            sexo = new SexoModelo();
+            tipoestacao = new TipoEstacaoModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
-            sexo.setPk_sexo(rs.getInt("pk_sexo"));
-            sexo.setNome(rs.getString("nome"));
+            tipoestacao.setPk_tipoestacao(rs.getInt("pk_tipoestacao"));
+            tipoestacao.setNome(rs.getString("nome"));
          
             Conexao.fecharConexao();
         
-            return sexo;
+            return tipoestacao;
         
         }catch(Exception e)
         {
@@ -96,11 +96,11 @@ public class SexoDAO
     }
     
      
-    public Boolean inserir(SexoModelo sexo)
+    public Boolean inserir(TipoEstacaoModelo tipoestacao)
     {
-        if ( sexoNaoExiste())
+        if ( tipoestacaoNaoExiste())
         {
-            String query = "INSERT INTO sexo(nome) VALUES(?)";
+            String query = "INSERT INTO tipoestacao(nome) VALUES(?)";
 
             try
             {
@@ -108,7 +108,7 @@ public class SexoDAO
                     Conexao.getConexao ();
 
                 preparedStatement = Conexao.conexao.prepareStatement(query);
-                preparedStatement.setString(1, sexo.getNome());
+                preparedStatement.setString(1, tipoestacao.getNome());
 
                 preparedStatement.execute();
 
@@ -126,9 +126,9 @@ public class SexoDAO
     
     }
      
-    public Boolean editar(SexoModelo sexo)
+    public Boolean editar(TipoEstacaoModelo tipoestacao)
     {
-        String query = "UPDATE sexo SET nome = ? WHERE pk_sexo = ?"; 
+        String query = "UPDATE tipoestacao SET nome = ? WHERE pk_tipoestacao = ?"; 
 
         try
         {
@@ -139,8 +139,8 @@ public class SexoDAO
             JOptionPane.showMessageDialog(null, query);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, sexo.getNome());
-            preparedStatement.setInt(2, sexo.getPk_sexo());
+            preparedStatement.setString(1, tipoestacao.getNome());
+            preparedStatement.setInt(2, tipoestacao.getPk_tipoestacao());
 
             preparedStatement.execute();
 
@@ -156,14 +156,14 @@ public class SexoDAO
     
     }
      
-    public void eliminar (SexoModelo sexo)
+    public void eliminar (TipoEstacaoModelo tipoestacao)
     {
-        String query = "DELETE FROM sexo WHERE pk_sexo = ?"; 
+        String query = "DELETE FROM tipoestacao WHERE pk_tipoestacao = ?"; 
         
         try
         {      
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
+            preparedStatement.setInt(1, tipoestacao.getPk_tipoestacao());
 
             preparedStatement.execute();        }
         catch(Exception e) {
@@ -174,9 +174,9 @@ public class SexoDAO
     
     }
     
-    public boolean sexoNaoExiste ()
+    public boolean tipoestacaoNaoExiste ()
     {
-        String query = "SELECT pk_sexo FROM sexo WHERE nome = ?";
+        String query = "SELECT pk_tipoestacao FROM tipoestacao WHERE nome = ?";
         
         try
         {
@@ -184,13 +184,13 @@ public class SexoDAO
                 Conexao.getConexao ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, sexo.getNome());
+            preparedStatement.setString(1, tipoestacao.getNome());
             
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet resultados = preparedStatement.executeQuery();
             
-            rs.next ();
+            resultados.next ();
             
-            return (rs.getInt(1) == 0);
+            return (resultados.getInt(1) == 0);
         }
         
         catch (SQLException excepcao)
@@ -201,19 +201,19 @@ public class SexoDAO
         return true;
     }
     
-    public int getIdPais( String nome )
+    public int getIdTipoestacao( String nome )
     {
         try
         {
             
-            String query = "SELECT pk_sexo FROM sexo WHERE nome = ?";
+            String query = "SELECT pk_tipoestacao FROM tipoestacao WHERE nome = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (sexo == null)
-                sexo = new SexoModelo ();
+            if (tipoestacao == null)
+                tipoestacao = new TipoEstacaoModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setString(1, nome);
@@ -224,10 +224,10 @@ public class SexoDAO
             
             if (resultados.getInt(1) != 0)
             {
-                sexo.setPk_sexo(resultados.getInt(1) );
+                tipoestacao.setPk_tipoestacao(resultados.getInt(1) );
             }
             
-            return sexo.getPk_sexo();
+            return tipoestacao.getPk_tipoestacao();
         }
         
         catch (SQLException excepcao)
@@ -243,14 +243,14 @@ public class SexoDAO
         try
         {
             
-            String query = "SELECT nome FROM sexo WHERE pk_sexo = ?";
+            String query = "SELECT nome FROM tipoestacao WHERE pk_tipoestacao = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (sexo == null)
-                sexo = new SexoModelo ();
+            if (tipoestacao == null)
+                tipoestacao = new TipoEstacaoModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setInt(1, codigo);
@@ -261,10 +261,10 @@ public class SexoDAO
             
             if (resultados.getString(1) != null)
             {
-                sexo.setNome(resultados.getString(1) );
+                tipoestacao.setNome(resultados.getString(1) );
             }
             
-            return sexo.getNome();
+            return tipoestacao.getNome();
         }
         
         catch (SQLException excepcao)

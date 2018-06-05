@@ -13,7 +13,7 @@ package modelo;
 public class EnderecoModelo 
 {
     private int pk_endereco;
-    private ComunaModelo comuna;
+    private MunicipioModelo municipio;
     private String bairro;
     private String rua;
     private String numeroCasa;
@@ -21,9 +21,9 @@ public class EnderecoModelo
     public EnderecoModelo() {
     }
 
-    public EnderecoModelo(int pk_endereco, ComunaModelo comuna, String bairro, String rua, String numeroCasa) {
+    public EnderecoModelo(int pk_endereco, MunicipioModelo municipio, String bairro, String rua, String numeroCasa) {
         this.pk_endereco = pk_endereco;
-        this.comuna = comuna;
+        this.municipio = municipio;
         this.bairro = bairro;
         this.rua = rua;
         this.numeroCasa = numeroCasa;
@@ -45,12 +45,12 @@ public class EnderecoModelo
         this.pk_endereco = pk_endereco;
     }
 
-    public ComunaModelo getComuna() {
-        return comuna;
+    public MunicipioModelo getMunicipio() {
+        return municipio;
     }
 
-    public void setComuna(ComunaModelo comuna) {
-        this.comuna = comuna;
+    public void setMunicipio(MunicipioModelo municipio) {
+        this.municipio = municipio;
     }
 
     public String getBairro() {
@@ -71,7 +71,7 @@ public class EnderecoModelo
 
     @Override
     public String toString() {
-        return "EnderecoModelo{" + "pk_endereco=" + pk_endereco + ", comuna=" + comuna + ", bairro=" + bairro + ", rua=" + rua + ", numeroCasa=" + numeroCasa + '}';
+        return "EnderecoModelo{" + "pk_endereco=" + pk_endereco + ", municipio=" + municipio + ", bairro=" + bairro + ", rua=" + rua + ", numeroCasa=" + numeroCasa + '}';
     }
         
 }

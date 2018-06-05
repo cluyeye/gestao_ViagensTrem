@@ -33,7 +33,7 @@
                     
                     <ul class="nav navbar-top-links navbar-left">
                         <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <em class="fa fa-shopping-bag"></em>
+                                <em class="fa fa-home"></em>
                             </a>
                             <!--<ul class="dropdown-menu dropdown-messages">
                                 <li>
@@ -81,11 +81,6 @@
                                     Eliminar
                                 </li>
                                 <li class="divider"></li>
-                                <li>
-                                    <div class="all-button"><a href="#">
-                                            <em class="fa fa-inbox"></em> <strong>Ver Todos</strong>
-                                        </a></div>
-                                </li>
                             </ul>
                             
                         </li>

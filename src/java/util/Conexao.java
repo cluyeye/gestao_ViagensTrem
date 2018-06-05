@@ -6,10 +6,7 @@
 
 package util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  *
@@ -17,15 +14,16 @@ import java.sql.Statement;
  */
 public class Conexao 
 {
- 
-    public Connection conexao;
     
-    public Statement statement;
+    public static Connection conexao;
     
-    public void getConexao ()
+    public static Statement statement;
+    
+    public static void getConexao()
     {
         String driver = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost:5432/ucandb";            
+        String url = "jdbc:postgresql://localhost:5432/universidadedb";
+            
         String username = "postgres";
         String senha = "postgres";
             
@@ -49,7 +47,7 @@ public class Conexao
     }
     
     
-    public void fecharConexao ()
+    public static void fecharConexao()
     {
         try 
         {
@@ -64,5 +62,5 @@ public class Conexao
         {
             System.err.println("Erro de SQL: " + ex.getMessage());
         }
-    }  
+    }
 }

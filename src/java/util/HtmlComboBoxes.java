@@ -15,9 +15,7 @@ import java.sql.ResultSet;
  */
 public class HtmlComboBoxes extends Conexao{
     
-        Conexao conn = new Conexao();
-
-        public HtmlComboBoxes(){ }
+    public HtmlComboBoxes(){ }
     
     /**
      * Constrói uma combo HTML (SELECT) a partir de uma tabela da BD.
@@ -43,8 +41,8 @@ public class HtmlComboBoxes extends Conexao{
             String evento,
             String valorSeleccionado) throws Exception
     {
-        //conectarBD();        
-        conn.getConexao();
+        //getConexaoBD();
+        Conexao.getConexao();
         
         //abrir a tag select
         StringBuffer html = new StringBuffer("<select name='" + nome + "' " +
@@ -56,7 +54,7 @@ public class HtmlComboBoxes extends Conexao{
             
 
         //efectuar a consulta SQL para seleccionar todos os registos da tabela
-        PreparedStatement stm =  (PreparedStatement) conn.conexao.prepareStatement("SELECT * FROM " + tabela + " ORDER BY " + label);
+        PreparedStatement stm =  (PreparedStatement) Conexao.conexao.prepareStatement("SELECT * FROM " + tabela + " ORDER BY " + label);
 
         ResultSet resultSet = stm.executeQuery();
 
@@ -78,7 +76,7 @@ public class HtmlComboBoxes extends Conexao{
         
         try
         {
-            conn.fecharConexao();
+            Conexao.fecharConexao();
         }      
         catch(Exception e)
         {
@@ -127,8 +125,8 @@ public class HtmlComboBoxes extends Conexao{
             String evento,
             String valorSeleccionado) throws Exception
     {
-//        conectarBD();
-        conn.getConexao();
+//        getConexaoBD();
+        Conexao.getConexao();
         
         StringBuffer html = new StringBuffer("");
             html.append("<select name='" + nome + "' " + "id='" + nome + "' " + evento + ">\n");
@@ -138,7 +136,7 @@ public class HtmlComboBoxes extends Conexao{
             html.append("<option value=\"\">-- escolha --</option></select>\n");
 
         //efectuar a consulta SQL para seleccionar todos os registos da tabela
-        PreparedStatement stm = (PreparedStatement) conn.conexao.prepareStatement("SELECT * FROM " + tabela + " ORDER BY " + label);
+        PreparedStatement stm = (PreparedStatement) Conexao.conexao.prepareStatement("SELECT * FROM " + tabela + " ORDER BY " + label);
 
         ResultSet resultSet = stm.executeQuery();
 
@@ -210,7 +208,7 @@ public class HtmlComboBoxes extends Conexao{
         
         try
         {
-            conn.fecharConexao();
+            Conexao.fecharConexao();
         }      
         catch(Exception e)
         {
@@ -247,8 +245,8 @@ public class HtmlComboBoxes extends Conexao{
             String valorSeleccionado,
             String valorActivo) throws Exception
     {
-//        conectarBD();
-        conn.getConexao();
+//        getConexaoBD();
+        Conexao.getConexao();
         
         StringBuffer html = new StringBuffer("");
         //abrir a tag select
@@ -257,7 +255,7 @@ public class HtmlComboBoxes extends Conexao{
         
 
         //efectuar a consulta SQL para seleccionar todos os registos da tabela
-        PreparedStatement stm = (PreparedStatement) conn.conexao.prepareStatement("SELECT * FROM " + tabela + " ORDER BY " + label);
+        PreparedStatement stm = (PreparedStatement) Conexao.conexao.prepareStatement("SELECT * FROM " + tabela + " ORDER BY " + label);
 
         ResultSet resultSet = stm.executeQuery();
 
@@ -339,7 +337,7 @@ public class HtmlComboBoxes extends Conexao{
 //        fecharConexao();
         try
         {
-            conn.fecharConexao();
+            Conexao.fecharConexao();
         }      
         catch(Exception e)
         {
@@ -380,8 +378,8 @@ public class HtmlComboBoxes extends Conexao{
             String evento,
             String valorSeleccionado) throws Exception
     {
-//        conectarBD();
-        conn.getConexao();
+//        getConexaoBD();
+        Conexao.getConexao();
         //abrir a tag select
         StringBuffer html = new StringBuffer("<select name='" + nome + "' " +
                 "id='" + nome + "' " + evento + ">\n");
@@ -390,7 +388,7 @@ public class HtmlComboBoxes extends Conexao{
         html.append("<option value=\"\">-- escolha --</option></select>\n");
 
         //efectuar a consulta SQL para seleccionar todos os registos da tabela
-        PreparedStatement stm = (PreparedStatement) conn.conexao.prepareStatement("SELECT * FROM " +
+        PreparedStatement stm = (PreparedStatement) Conexao.conexao.prepareStatement("SELECT * FROM " +
                 tabela + ", " + joinTable + " WHERE " + tabela + "." + value +
                 " = " + joinTable + "." + joinValue +" ORDER BY " + label);
 
@@ -462,7 +460,7 @@ public class HtmlComboBoxes extends Conexao{
 //        fecharConexao();
         try
         {
-            conn.fecharConexao();
+            Conexao.fecharConexao();
         }      
         catch(Exception e)
         {
@@ -515,8 +513,8 @@ public class HtmlComboBoxes extends Conexao{
                 " = " + joinTable + "." + joinValue +" ORDER BY " + tabela + "." +
                 label1 );
         
-//        conectarBD();
-         conn.getConexao();
+//        getConexaoBD();
+         Conexao.getConexao();
         //abrir a tag select
         StringBuffer html = new StringBuffer("<select name='" + nome + "' " +
                 "id='" + nome + "' " + evento + ">\n");
@@ -525,7 +523,7 @@ public class HtmlComboBoxes extends Conexao{
         html.append("<option value=\"\">-- escolha --</option></select>\n");
 
         //efectuar a consulta SQL para seleccionar todos os registos da tabela
-        PreparedStatement stm = (PreparedStatement) conn.conexao.prepareStatement("SELECT * FROM " +
+        PreparedStatement stm = (PreparedStatement) Conexao.conexao.prepareStatement("SELECT * FROM " +
                 tabela + ", " + joinTable + " WHERE " + tabela + "." + value +
                 " = " + joinTable + "." + joinValue +" ORDER BY " + tabela + "." +
                 label1 );
@@ -600,7 +598,7 @@ public class HtmlComboBoxes extends Conexao{
         
         try
         {
-            conn.fecharConexao();
+            Conexao.fecharConexao();
         }      
         catch(Exception e)
         {
