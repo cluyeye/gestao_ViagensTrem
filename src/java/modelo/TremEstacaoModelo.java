@@ -6,6 +6,8 @@
 
 package modelo;
 
+import java.util.Calendar;
+
 /**
  *
  * @author coxe
@@ -14,23 +16,25 @@ public class TremEstacaoModelo
 {
     private TremModelo trem;
     private EstacaoModelo estacao;
-    private TipoViagemModelo trajectoSentido;
+    private TipoViagemModelo tipoviagem;
+    private Calendar dataviagem;
 
     public TremEstacaoModelo() {
     }
 
-    public TremEstacaoModelo(TremModelo trem, EstacaoModelo estacao, TipoViagemModelo trajectoSentido) {
+    public TremEstacaoModelo(TremModelo trem, EstacaoModelo estacao, TipoViagemModelo tipoviagem, Calendar dataviagem) {
         this.trem = trem;
         this.estacao = estacao;
-        this.trajectoSentido = trajectoSentido;
+        this.tipoviagem = tipoviagem;
+        this.dataviagem = dataviagem;
     }
 
-    public TipoViagemModelo getTrajectoSentido() {
-        return trajectoSentido;
+    public Calendar getDataViagem() {
+        return dataviagem;
     }
 
-    public void setTrajectoSentido(TipoViagemModelo trajectoSentido) {
-        this.trajectoSentido = trajectoSentido;
+    public void setDataViagem(Calendar dataviagem) {
+        this.dataviagem = dataviagem;
     }
 
     public TremModelo getTrem() {
@@ -49,9 +53,18 @@ public class TremEstacaoModelo
         this.estacao = estacao;
     }
 
+    public TipoViagemModelo getTipoViagem() {
+        return tipoviagem;
+    }
+
+    public void setTipoViagem(TipoViagemModelo tipoviagem) {
+        this.tipoviagem = tipoviagem;
+    }
+
     @Override
     public String toString() {
-        return "TremEstacaoModelo{" + "trem=" + trem + ", estacao=" + estacao + ", trajectoSentido=" + trajectoSentido + '}';
+        return "TremEstacaoModelo{" + "trem=" + trem + ", estacao=" + estacao + ", tipoviagem=" + tipoviagem + ", dataviagem=" + dataviagem + '}';
     }
-    
+       
+
 }

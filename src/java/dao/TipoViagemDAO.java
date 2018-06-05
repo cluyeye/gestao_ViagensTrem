@@ -11,31 +11,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.EstacaoModelo;
+import modelo.TipoViagemModelo;
 import util.Conexao;
 
 /**
  *
  * @author coxe
  */
-public class EstacaoDAO 
+public class TipoViagemDAO 
 {
-    private EstacaoModelo estacao;
+    private TipoViagemModelo tipoviagem;
     private PreparedStatement preparedStatement;
 
-    public EstacaoDAO() { }
+    public TipoViagemDAO() { }
 
-    public EstacaoDAO(EstacaoModelo estacao)
+    public TipoViagemDAO(TipoViagemModelo tipoviagem)
     {
-        this.estacao = estacao;
+        this.tipoviagem = tipoviagem;
     }
       
-    public ArrayList<EstacaoModelo> listar()
+    public ArrayList<TipoViagemModelo> listar()
     {
-        ArrayList<EstacaoModelo> lista = new ArrayList<EstacaoModelo>();
-        EstacaoModelo estacao;
+        ArrayList<TipoViagemModelo> lista = new ArrayList<TipoViagemModelo>();
+        TipoViagemModelo tipoviagem;
         
-        String query ="SELECT * FROM estacao";
+        String query ="SELECT * FROM tipoviagem";
         
         try
         {
@@ -43,22 +43,15 @@ public class EstacaoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            estacao = new EstacaoModelo();
+            tipoviagem = new TipoViagemModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
-                estacao.setPk_estacao(rs.getInt("pk_estacao"));
-                estacao.setNome(rs.getString("nome"));
-                estacao.setTipoEstacao(
-                        new TipoEstacaoDAO().getByID(rs.getInt("fk_tipoestacao"))                        
-                );
-                estacao.setEndereco(
-                        new EnderecoDAO().getByID(rs.getInt("fk_endereco"))                        
-                );
-                
-                lista.add(estacao);
+                tipoviagem.setPk_tipoviagem(rs.getInt("pk_tipoviagem"));
+                tipoviagem.setNome(rs.getString("nome"));
+                lista.add(tipoviagem);
             }
 
         }catch(Exception e)
@@ -70,34 +63,28 @@ public class EstacaoDAO
     
     }
       
-    public EstacaoModelo getByID(int id)
+    public TipoViagemModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM estacao WHERE pk_estacao = ?";
+        String query ="SELECT * FROM tipoviagem WHERE pk_tipoviagem = ?";
         
         try
         {
-            estacao.setPk_estacao(id);
+            tipoviagem.setPk_tipoviagem(id);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, estacao.getPk_estacao());
+            preparedStatement.setInt(1, tipoviagem.getPk_tipoviagem());
                         
-            estacao = new EstacaoModelo();
+            tipoviagem = new TipoViagemModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
-            estacao.setPk_estacao(rs.getInt("pk_estacao"));
-            estacao.setNome(rs.getString("nome"));
-            estacao.setTipoEstacao(
-                    new TipoEstacaoDAO().getByID(rs.getInt("fk_tipoestacao"))                        
-            );
-            estacao.setEndereco(
-                    new EnderecoDAO().getByID(rs.getInt("fk_endereco"))                        
-            );
+            tipoviagem.setPk_tipoviagem(rs.getInt("pk_tipoviagem"));
+            tipoviagem.setNome(rs.getString("nome"));
          
             Conexao.fecharConexao();
         
-            return estacao;
+            return tipoviagem;
         
         }catch(Exception e)
         {
@@ -109,22 +96,19 @@ public class EstacaoDAO
     }
     
      
-    public Boolean inserir(EstacaoModelo estacao)
+    public Boolean inserir(TipoViagemModelo tipoviagem)
     {
-        if ( estacaoNaoExiste())
+        if ( tipoviagemNaoExiste())
         {
-            String query = "INSERT INTO estacao(nome, fk_tipoestacao, fk_endereco) VALUES(?, ?)";
+            String query = "INSERT INTO tipoviagem(nome) VALUES(?)";
 
             try
             {
                 if (Conexao.conexao == null)
                     Conexao.getConexao ();
 
-                preparedStatement = Conexao.conexao.prepareStatement(query);                
-                preparedStatement.setInt(1, estacao.getTipoEstacao().getPk_tipoestacao());
-                preparedStatement.setInt(2, estacao.getTipoEstacao().getPk_tipoestacao());
-                preparedStatement.setInt(3, estacao.getEndereco().getPk_endereco());
-                
+                preparedStatement = Conexao.conexao.prepareStatement(query);
+                preparedStatement.setString(1, tipoviagem.getNome());
 
                 preparedStatement.execute();
 
@@ -142,9 +126,9 @@ public class EstacaoDAO
     
     }
      
-    public Boolean editar(EstacaoModelo estacao)
+    public Boolean editar(TipoViagemModelo tipoviagem)
     {
-        String query = "UPDATE estacao SET fk_tipoestacao = ?, fk_endereco = ? WHERE pk_estacao = ?"; 
+        String query = "UPDATE tipoviagem SET nome = ? WHERE pk_tipoviagem = ?"; 
 
         try
         {
@@ -154,11 +138,9 @@ public class EstacaoDAO
             System.out.printf(query, null);
             JOptionPane.showMessageDialog(null, query);
 
-            preparedStatement = Conexao.conexao.prepareStatement(query);                
-            preparedStatement.setString(1, estacao.getNome());
-            preparedStatement.setInt(2, estacao.getTipoEstacao().getPk_tipoestacao());
-            preparedStatement.setInt(3, estacao.getEndereco().getPk_endereco());
-            preparedStatement.setInt(4, estacao.getPk_estacao());
+            preparedStatement = Conexao.conexao.prepareStatement(query);
+            preparedStatement.setString(1, tipoviagem.getNome());
+            preparedStatement.setInt(2, tipoviagem.getPk_tipoviagem());
 
             preparedStatement.execute();
 
@@ -174,14 +156,14 @@ public class EstacaoDAO
     
     }
      
-    public void eliminar (EstacaoModelo estacao)
+    public void eliminar (TipoViagemModelo tipoviagem)
     {
-        String query = "DELETE FROM estacao WHERE pk_estacao = ?"; 
+        String query = "DELETE FROM tipoviagem WHERE pk_tipoviagem = ?"; 
         
         try
         {      
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, estacao.getPk_estacao());
+            preparedStatement.setInt(1, tipoviagem.getPk_tipoviagem());
 
             preparedStatement.execute();        }
         catch(Exception e) {
@@ -192,9 +174,9 @@ public class EstacaoDAO
     
     }
     
-    public boolean estacaoNaoExiste ()
+    public boolean tipoviagemNaoExiste ()
     {
-        String query = "SELECT pk_estacao FROM estacao WHERE nome = ?";
+        String query = "SELECT pk_tipoviagem FROM tipoviagem WHERE nome = ?";
         
         try
         {
@@ -202,7 +184,7 @@ public class EstacaoDAO
                 Conexao.getConexao ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, estacao.getNome());
+            preparedStatement.setString(1, tipoviagem.getNome());
             
             ResultSet resultados = preparedStatement.executeQuery();
             
@@ -219,19 +201,19 @@ public class EstacaoDAO
         return true;
     }
     
-    public int getIdEstacao( String nome )
+    public int getIdTipoviagem( String nome )
     {
         try
         {
             
-            String query = "SELECT pk_estacao FROM estacao WHERE nome = ?";
+            String query = "SELECT pk_tipoviagem FROM tipoviagem WHERE nome = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (estacao == null)
-                estacao = new EstacaoModelo ();
+            if (tipoviagem == null)
+                tipoviagem = new TipoViagemModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setString(1, nome);
@@ -242,10 +224,10 @@ public class EstacaoDAO
             
             if (resultados.getInt(1) != 0)
             {
-                estacao.setPk_estacao(resultados.getInt(1) );
+                tipoviagem.setPk_tipoviagem(resultados.getInt(1) );
             }
             
-            return estacao.getPk_estacao();
+            return tipoviagem.getPk_tipoviagem();
         }
         
         catch (SQLException excepcao)
@@ -256,19 +238,19 @@ public class EstacaoDAO
         return -1;
     }
     
-    public String getNome( int codigo )
+    public String getDesignacao( int codigo )
     {
         try
         {
             
-            String query = "SELECT nome FROM estacao WHERE pk_estacao = ?";
+            String query = "SELECT nome FROM tipoviagem WHERE pk_tipoviagem = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (estacao == null)
-                estacao = new EstacaoModelo ();
+            if (tipoviagem == null)
+                tipoviagem = new TipoViagemModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setInt(1, codigo);
@@ -279,10 +261,10 @@ public class EstacaoDAO
             
             if (resultados.getString(1) != null)
             {
-                //estacao.setNome(resultados.getString(1) );
+                tipoviagem.setNome(resultados.getString(1) );
             }
             
-            return estacao.getNome();
+            return tipoviagem.getNome();
         }
         
         catch (SQLException excepcao)
@@ -291,6 +273,7 @@ public class EstacaoDAO
         }
 
         return null;
-    }   
+    }    
+
     
 }
