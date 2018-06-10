@@ -6,6 +6,7 @@
 
 package dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +36,6 @@ public class PessoaDAO
     public ArrayList<PessoaModelo> listar()
     {
         ArrayList<PessoaModelo> lista = new ArrayList<PessoaModelo>();
-        PessoaModelo pessoa;
         
         String query ="SELECT * FROM pessoa";
         
@@ -44,29 +44,27 @@ public class PessoaDAO
             if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-                        
-            pessoa = new PessoaModelo();
+                           
+            preparedStatement.setDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis()));
+            preparedStatement.setDate(9, new Date( pessoa.getDataCriacao().getTimeInMillis()));
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
-                pessoa.setPk_pessoa(rs.getInt("pk_pessoa"));
-                pessoa.setNome(rs.getString("nome"));
-                pessoa.setSobrenome(rs.getString("sobrenome"));
-                pessoa.setTelefone(rs.getString("nome"));
+            {    
+                pessoa.setPk_pessoa(rs.getInt(1));
                 pessoa.setSexo(
-                        new SexoDAO().getByID(rs.getInt("fk_sexo"))
+                        new SexoDAO().getByID(rs.getInt(2))
                 );
-                pessoa.setNumeroBI(rs.getString("nome"));
                 pessoa.setEstadoCivil(
-                        new EstadoCivilDAO().getByID(rs.getInt("fk_estadocivil"))
+                        new EstadoCivilDAO().getByID(rs.getInt(3))
                 );
-//                pessoa.setDataNascimento(rs.getString("nome"));
                 pessoa.setEndereco(
-                        new EnderecoDAO().getByID(rs.getInt("fk_endereco"))
+                        new EnderecoDAO().getByID(rs.getInt(4))
                 );
-//                pessoa.setDataCriacao(rs.getString("nome"));
+                pessoa.setNome(rs.getString(5));
+                pessoa.setSobrenome(rs.getString(6));
+                pessoa.setTelefone(rs.getString(7));
                 
                 lista.add(pessoa);
             }
@@ -83,21 +81,38 @@ public class PessoaDAO
     public PessoaModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM pessoa WHERE pk_pessoa = ?";
+        String query ="SELECT * FROM pessoa WHERE pk_pessoa = " + id;
         
         try
         {
+            if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, pessoa.getPk_pessoa());
                         
-            pessoa = new PessoaModelo();
+            preparedStatement.setDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis()));
+            preparedStatement.setDate(9, new Date( pessoa.getDataCriacao().getTimeInMillis()));
 
             ResultSet rs = preparedStatement.executeQuery();
             
-            pessoa.setPk_pessoa(rs.getInt("pk_pessoa"));
-            pessoa.setNome(rs.getString("nome"));
-         
+            while(rs.next())
+            {    
+                pessoa.setPk_pessoa(rs.getInt(1));
+                pessoa.setSexo(
+                        new SexoDAO().getByID(rs.getInt(2))
+                );
+                pessoa.setEstadoCivil(
+                        new EstadoCivilDAO().getByID(rs.getInt(3))
+                );
+                pessoa.setEndereco(
+                        new EnderecoDAO().getByID(rs.getInt(4))
+                );
+                pessoa.setNome(rs.getString(5));
+                pessoa.setSobrenome(rs.getString(6));
+                pessoa.setTelefone(rs.getString(7));
+//                pessoa.setDataNascimento(rs.getDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis())));
+//                pessoa.setDataCriacao(rs.getDate(8, new Date( pessoa.getDataCriacao().getTimeInMillis()));
+            }
+
             Conexao.fecharConexao();
         
             return pessoa;

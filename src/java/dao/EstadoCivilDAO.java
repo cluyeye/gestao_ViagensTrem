@@ -33,7 +33,6 @@ public class EstadoCivilDAO
     public ArrayList<EstadoCivilModelo> listar()
     {
         ArrayList<EstadoCivilModelo> lista = new ArrayList<EstadoCivilModelo>();
-        EstadoCivilModelo estadocivil;
         
         String query ="SELECT * FROM estadocivil";
         
@@ -43,12 +42,13 @@ public class EstadoCivilDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            estadocivil = new EstadoCivilModelo();
-
+            
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
+            {
+                estadocivil = new EstadoCivilModelo();
+                
                 estadocivil.setPk_estadocivil(rs.getInt("pk_estadocivil"));
                 estadocivil.setNome(rs.getString("nome"));
                 lista.add(estadocivil);
@@ -66,21 +66,23 @@ public class EstadoCivilDAO
     public EstadoCivilModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM estadocivil WHERE pk_estadocivil = ?";
+        String query ="SELECT * FROM estadocivil WHERE pk_estadocivil = " + id;
         
         try
         {
-            estadocivil.setPk_estadocivil(id);
+            if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, estadocivil.getPk_estadocivil());
                         
-            estadocivil = new EstadoCivilModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
-            estadocivil.setPk_estadocivil(rs.getInt("pk_estadocivil"));
-            estadocivil.setNome(rs.getString("nome"));
+            while(rs.next())
+            {  
+                estadocivil = new EstadoCivilModelo();       
+                
+                estadocivil.setPk_estadocivil(rs.getInt(1));
+                estadocivil.setNome(rs.getString(2));
+            }
          
             Conexao.fecharConexao();
         

@@ -37,9 +37,8 @@ public class EngenheiroDAO
     public ArrayList<EngenheiroModelo> listar()
     {
         ArrayList<EngenheiroModelo> lista = new ArrayList<EngenheiroModelo>();
-        EngenheiroModelo engenheiro;
         
-        String query ="SELECT * FROM engenheiro";
+        String query ="SELECT pk_engenheiro, fk_pessoa FROM engenheiro";
         
         try
         {
@@ -47,17 +46,19 @@ public class EngenheiroDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            engenheiro = new EngenheiroModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
+                engenheiro = new EngenheiroModelo();
+        
                 engenheiro.setPk_engenheiro(rs.getInt("pk_engenheiro"));
                 engenheiro.setPessoa(
                     new PessoaDAO().getByID(rs.getInt("fk_pessoa"))                        
                 );
                 
+                JOptionPane.showMessageDialog(null, engenheiro.toString());
                 lista.add(engenheiro);
             }
 
@@ -73,22 +74,33 @@ public class EngenheiroDAO
     public EngenheiroModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM engenheiro WHERE pk_engenheiro = ?";
+        String query ="SELECT * FROM engenheiro WHERE pk_engenheiro = " + id;
         
         try
         {
 
-            preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, engenheiro.getPk_engenheiro());
-                        
-            engenheiro = new EngenheiroModelo();
+//            preparedStatement = Conexao.conexao.prepareStatement(query);
+//            preparedStatement.setInt(1, engenheiro.getPk_engenheiro());
+//                        
+//            
+//
+//            ResultSet rs = preparedStatement.executeQuery();
+            
+            if(Conexao.conexao == null) Conexao.getConexao();
 
+            preparedStatement = Conexao.conexao.prepareStatement(query);
+                        
             ResultSet rs = preparedStatement.executeQuery();
             
-            engenheiro.setPk_engenheiro(rs.getInt("pk_engenheiro"));
-            engenheiro.setPessoa(
-                new PessoaDAO().getByID(rs.getInt("fk_pessoa"))                        
-            );
+            while(rs.next())
+            {            
+                engenheiro = new EngenheiroModelo();
+                
+                engenheiro.setPk_engenheiro(rs.getInt(1));
+                engenheiro.setPessoa(
+                    new PessoaDAO().getByID(rs.getInt(2))                        
+                );
+            }
          
             Conexao.fecharConexao();
         

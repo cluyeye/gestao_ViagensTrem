@@ -33,7 +33,6 @@ public class TipoEstacaoDAO
     public ArrayList<TipoEstacaoModelo> listar()
     {
         ArrayList<TipoEstacaoModelo> lista = new ArrayList<TipoEstacaoModelo>();
-        TipoEstacaoModelo tipoestacao;
         
         String query ="SELECT * FROM tipoestacao";
         
@@ -42,13 +41,13 @@ public class TipoEstacaoDAO
             if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-                        
-            tipoestacao = new TipoEstacaoModelo();
-
+            
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
+                tipoestacao = new TipoEstacaoModelo();
+                
                 tipoestacao.setPk_tipoestacao(rs.getInt("pk_tipoestacao"));
                 tipoestacao.setNome(rs.getString("nome"));
                 lista.add(tipoestacao);

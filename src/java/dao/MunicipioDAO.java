@@ -34,7 +34,6 @@ public class MunicipioDAO
     public ArrayList<MunicipioModelo> listar()
     {
         ArrayList<MunicipioModelo> lista = new ArrayList<MunicipioModelo>();
-        MunicipioModelo municipio;
         
         String query ="SELECT * FROM municipio";
         
@@ -44,12 +43,13 @@ public class MunicipioDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            municipio = new MunicipioModelo();
-
+            
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
+            {
+                municipio = new MunicipioModelo();
+                
                 municipio.setPk_municipio(rs.getInt("pk_municipio"));
                 municipio.setProvincia(
                     new ProvinciaDAO().getByID(rs.getInt("fk_provincia"))                        
@@ -70,25 +70,27 @@ public class MunicipioDAO
     public MunicipioModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM municipio WHERE pk_municipio = ?";
+        String query ="SELECT * FROM municipio WHERE pk_municipio = " + id;
         
         try
         {
-            municipio.setPk_municipio(id);
+            if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, municipio.getPk_municipio());
                         
-            municipio = new MunicipioModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
-            municipio.setPk_municipio(rs.getInt("pk_municipio"));
-            municipio.setProvincia(
-                new ProvinciaDAO().getByID(rs.getInt("fk_provincia"))                        
-            );
-            municipio.setNome(rs.getString("nome"));
-         
+            while(rs.next())
+            {
+                municipio = new MunicipioModelo();
+                
+                municipio.setPk_municipio(rs.getInt(1));
+                municipio.setProvincia(
+                   new ProvinciaDAO().getByID(rs.getInt(2))                        
+                );
+                municipio.setNome(rs.getString(3));               
+            }
+                        
             Conexao.fecharConexao();
         
             return municipio;

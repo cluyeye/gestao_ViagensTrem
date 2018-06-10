@@ -33,24 +33,24 @@ public class SexoDAO
     public ArrayList<SexoModelo> listar()
     {
         ArrayList<SexoModelo> lista = new ArrayList<SexoModelo>();
-        SexoModelo sexo;
         
         String query ="SELECT * FROM sexo";
         
         try
         {
+            
             if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-                        
-            sexo = new SexoModelo();
-
+            
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
-                sexo.setPk_sexo(rs.getInt("pk_sexo"));
-                sexo.setNome(rs.getString("nome"));
+            {
+                sexo = new SexoModelo();
+                
+                sexo.setPk_sexo(rs.getInt(1));
+                sexo.setNome(rs.getString(2));
                 lista.add(sexo);
             }
 
@@ -66,21 +66,23 @@ public class SexoDAO
     public SexoModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM sexo WHERE pk_sexo = ?";
+        String query ="SELECT * FROM sexo WHERE pk_sexo = " + id;
         
         try
         {
-            sexo.setPk_sexo(id);
-
+            if(Conexao.conexao == null) Conexao.getConexao();
+        
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, sexo.getPk_sexo());
                         
-            sexo = new SexoModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
-            sexo.setPk_sexo(rs.getInt("pk_sexo"));
-            sexo.setNome(rs.getString("nome"));
+            while(rs.next())
+            {
+                sexo = new SexoModelo();
+
+                sexo.setPk_sexo(rs.getInt(1));
+                sexo.setNome(rs.getString(2));
+            }  
          
             Conexao.fecharConexao();
         

@@ -34,7 +34,6 @@ public class TremEstacaoDAO
     public ArrayList<TremEstacaoModelo> listar()
     {
         ArrayList<TremEstacaoModelo> lista = new ArrayList<TremEstacaoModelo>();
-        TremEstacaoModelo tremestacao;
         
         String query ="SELECT * FROM tremestacao";
         
@@ -44,12 +43,12 @@ public class TremEstacaoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            tremestacao = new TremEstacaoModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
+            {
+                tremestacao = new TremEstacaoModelo();
+                
                 tremestacao.setTrem(
                         new TremDAO().getByID(
                         rs.getInt("fk_trem"))

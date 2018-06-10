@@ -33,9 +33,8 @@ public class EstacaoDAO
     public ArrayList<EstacaoModelo> listar()
     {
         ArrayList<EstacaoModelo> lista = new ArrayList<EstacaoModelo>();
-        EstacaoModelo estacao;
         
-        String query ="SELECT * FROM estacao";
+        String query ="SELECT pk_estacao, nome, fk_tipoestacao, fk_endereco FROM estacao";
         
         try
         {
@@ -43,12 +42,12 @@ public class EstacaoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            estacao = new EstacaoModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
+                estacao = new EstacaoModelo();
+
                 estacao.setPk_estacao(rs.getInt("pk_estacao"));
                 estacao.setNome(rs.getString("nome"));
                 estacao.setTipoEstacao(

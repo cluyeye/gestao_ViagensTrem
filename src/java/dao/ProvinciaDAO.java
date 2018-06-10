@@ -34,7 +34,6 @@ public class ProvinciaDAO
     public ArrayList<ProvinciaModelo> listar()
     {
         ArrayList<ProvinciaModelo> lista = new ArrayList<ProvinciaModelo>();
-        ProvinciaModelo provincia;
         
         String query ="SELECT * FROM provincia";
         
@@ -44,12 +43,13 @@ public class ProvinciaDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            provincia = new ProvinciaModelo();
-
+            
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
+            {
+                provincia = new ProvinciaModelo();
+                
                 provincia.setPk_provincia(rs.getInt("pk_provincia"));
                 provincia.setPais(
                         new PaisDAO().getByID(rs.getInt("fk_pais"))                        
@@ -70,24 +70,26 @@ public class ProvinciaDAO
     public ProvinciaModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM provincia WHERE pk_provincia = ?";
+        String query ="SELECT * FROM provincia WHERE pk_provincia = " + id;
         
         try
         {
-            provincia.setPk_provincia(id);
+            if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, provincia.getPk_provincia());
                         
-            provincia = new ProvinciaModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
-            provincia.setPk_provincia(rs.getInt("pk_provincia"));
-            provincia.setPais(
-                    new PaisDAO().getByID(rs.getInt("fk_pais"))                        
-            );
-            provincia.setNome(rs.getString("nome"));
+            while(rs.next())
+            {
+                provincia = new ProvinciaModelo();
+                
+                provincia.setPk_provincia(rs.getInt(1));
+                provincia.setPais(
+                        new PaisDAO().getByID(rs.getInt(2))                        
+                );
+                provincia.setNome(rs.getString(3));
+            }
          
             Conexao.fecharConexao();
         

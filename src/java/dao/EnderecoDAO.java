@@ -36,7 +36,7 @@ public class EnderecoDAO
         ArrayList<EnderecoModelo> lista = new ArrayList<EnderecoModelo>();
         EnderecoModelo endereco;
         
-        String query ="SELECT * FROM endereco";
+        String query ="SELECT pk_endereco, fk_municipio, bairro, rua, numeroCasa FROM endereco";
         
         try
         {
@@ -44,12 +44,12 @@ public class EnderecoDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            endereco = new EnderecoModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
+                endereco = new EnderecoModelo();
+    
                 endereco.setPk_endereco(rs.getInt("pk_endereco"));
                 endereco.setMunicipio(
                     new MunicipioDAO().getByID(rs.getInt("fk_municipio"))                        
@@ -73,25 +73,29 @@ public class EnderecoDAO
     public EnderecoModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM endereco WHERE pk_endereco = ?";
+        String query ="SELECT * FROM endereco WHERE pk_endereco = " + id;
         
         try
         {
 
-            preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, endereco.getPk_endereco());
-                        
-            endereco = new EnderecoModelo();
+            if(Conexao.conexao == null) Conexao.getConexao();
 
+            preparedStatement = Conexao.conexao.prepareStatement(query);
+                        
             ResultSet rs = preparedStatement.executeQuery();
             
-            endereco.setPk_endereco(rs.getInt("pk_endereco"));
-            endereco.setMunicipio(
-                new MunicipioDAO().getByID(rs.getInt("fk_municipio"))                        
-            );
-            endereco.setBairro(rs.getString("bairro"));
-            endereco.setRua(rs.getString("rua"));
-            endereco.setNumeroCasa(rs.getString("numeroCasa"));
+            while(rs.next())
+            {  
+                endereco = new EnderecoModelo();
+
+                endereco.setPk_endereco(rs.getInt(1));
+                endereco.setMunicipio(
+                    new MunicipioDAO().getByID(rs.getInt(2))                        
+                );
+                endereco.setBairro(rs.getString(3));
+                endereco.setRua(rs.getString(4));
+                endereco.setNumeroCasa(rs.getString(5));
+            }
                 
             Conexao.fecharConexao();
         

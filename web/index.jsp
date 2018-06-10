@@ -28,7 +28,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span></button>
-                    <a class="navbar-brand" href="#"><span>TREM</span><small>TRAVEL</small></a>
+                    <a class="navbar-brand" href="index.jsp"><span>TREM</span><small>TRAVEL</small></a>
                                         
                     
                     <ul class="nav navbar-top-links navbar-left">
@@ -65,36 +65,52 @@
                         </li>
                         
                         <li class="dropdown"><a data-toggle="dropdown" href="#">
-                                <em class="fa fa-train"></em>&nbsp;Trem
+                                <em class="fa fa-cogs"></em>&nbsp;Gestão<em class="fa fa-arrow-down"></em>
                             </a> 
                             
                             <ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    Novo
+                                <li class="item">
+                                    <a href="trem.jsp">
+                                        <em class="fa fa-train"></em>&nbsp;Trem
+                                    </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    Editar
+                                    <a href="trem.jsp">
+                                        <em class="fa fa-star"></em>&nbsp;Estação
+                                    </a>
                                 </li>
                                 <li class="divider"></li>
-                                <li>
-                                    Eliminar
+                                
+                                <li class="item">
+                                    <a href="pais.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Países
+                                    </a>
                                 </li>
-                                <li class="divider"></li>
                             </ul>
                             
                         </li>
-                        
-                        <li class="dropdown"><a data-toggle="dropdown" href="#">
-                                <em class="fa fa-star"></em>&nbsp;Estações
-                            </a>                            
-                        </li>
-                        
+                                                
                         <li class="dropdown"><a data-toggle="dropdown" href="#">
                                 <em class="fa fa-table"></em>&nbsp;Tabelas
                             </a>                            
                         </li>                       
                         
+                            <ul class="dropdown-menu dropdown-messages">
+                                <li class="item">
+                                    <a href="pais.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Países
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="trem.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Munícipios
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                
+                            </ul>
                     </ul>
                     
                     

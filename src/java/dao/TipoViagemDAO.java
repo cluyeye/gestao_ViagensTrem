@@ -33,7 +33,6 @@ public class TipoViagemDAO
     public ArrayList<TipoViagemModelo> listar()
     {
         ArrayList<TipoViagemModelo> lista = new ArrayList<TipoViagemModelo>();
-        TipoViagemModelo tipoviagem;
         
         String query ="SELECT * FROM tipoviagem";
         
@@ -43,12 +42,13 @@ public class TipoViagemDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            tipoviagem = new TipoViagemModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
+                tipoviagem = new TipoViagemModelo();
+                
                 tipoviagem.setPk_tipoviagem(rs.getInt("pk_tipoviagem"));
                 tipoviagem.setNome(rs.getString("nome"));
                 lista.add(tipoviagem);

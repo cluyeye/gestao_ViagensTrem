@@ -33,7 +33,6 @@ public class PaisDAO
     public ArrayList<PaisModelo> listar()
     {
         ArrayList<PaisModelo> lista = new ArrayList<PaisModelo>();
-        PaisModelo pais;
         
         String query ="SELECT * FROM pais";
         
@@ -43,45 +42,49 @@ public class PaisDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            pais = new PaisModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
-                pais.setPk_pais(rs.getInt("pk_pais"));
-                pais.setNome(rs.getString("nome"));
+                pais = new PaisModelo();
+
+                pais.setPk_pais(rs.getInt(1));
+                pais.setNome(rs.getString(2));                
+                                
                 lista.add(pais);
             }
+
+            return lista;
 
         }catch(Exception e)
         {
             e.printStackTrace();
         }
     
-        return lista;
-    
+        return null;    
     }
       
     public PaisModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM pais WHERE pk_pais = ?";
+        String query ="SELECT * FROM pais WHERE pk_pais = " + id;
         
         try
         {
-            pais.setPk_pais(id);
+            if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, pais.getPk_pais());
                         
-            pais = new PaisModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
-            pais.setPk_pais(rs.getInt("pk_pais"));
-            pais.setNome(rs.getString("nome"));
-         
+            while(rs.next())
+            {
+                pais = new PaisModelo();
+
+                pais.setPk_pais(rs.getInt(1));
+                pais.setNome(rs.getString(2));                
+            }
+            
             Conexao.fecharConexao();
         
             return pais;
@@ -136,7 +139,6 @@ public class PaisDAO
                 Conexao.getConexao ();
 
             System.out.printf(query, null);
-            JOptionPane.showMessageDialog(null, query);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setString(1, pais.getNome());

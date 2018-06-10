@@ -33,9 +33,9 @@ public class TremDAO
     public ArrayList<TremModelo> listar()
     {
         ArrayList<TremModelo> lista = new ArrayList<TremModelo>();
-        TremModelo trem;
         
-        String query ="SELECT * FROM trem";
+//        String query ="SELECT pk_trem, fk_engenheiro, fk_tipotrem FROM trem";
+        String query ="SELECT pk_trem, fk_tipotrem FROM trem";
         
         try
         {
@@ -43,29 +43,33 @@ public class TremDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            trem = new TremModelo();
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
-                trem.setPk_trem(rs.getInt("pk_trem"));
-                trem.setTipoTrem(
-                        new TipoTremDAO().getByID(rs.getInt("fk_tipotrem"))                        
-                );
+            {
+                trem = new TremModelo();
+                
+                trem.setPk_trem(rs.getInt(1));
                 trem.setEngenheiro(
-                        new EngenheiroDAO().getByID(rs.getInt("fk_engenheiro"))                        
+                        new EngenheiroDAO().getByID(rs.getInt(2))                        
                 );
+                trem.setTipoTrem(
+                        new TipoTremDAO().getByID(rs.getInt(3))                        
+                );
+                
+                JOptionPane.showMessageDialog(null, trem.toString());
                 
                 lista.add(trem);
             }
+    
+            return lista;
 
         }catch(Exception e)
         {
             e.printStackTrace();
         }
     
-        return lista;
+        return null;
     
     }
       

@@ -33,7 +33,6 @@ public class TipoTremDAO
     public ArrayList<TipoTremModelo> listar()
     {
         ArrayList<TipoTremModelo> lista = new ArrayList<TipoTremModelo>();
-        TipoTremModelo tipotrem;
         
         String query ="SELECT * FROM tipotrem";
         
@@ -43,12 +42,13 @@ public class TipoTremDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-            tipotrem = new TipoTremModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
+            {   
+                tipotrem = new TipoTremModelo();
+                
                 tipotrem.setPk_tipotrem(rs.getInt("pk_tipotrem"));
                 tipotrem.setNome(rs.getString("nome"));
                 lista.add(tipotrem);
@@ -66,24 +66,31 @@ public class TipoTremDAO
     public TipoTremModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM tipotrem WHERE pk_tipotrem = ?";
+        String query ="SELECT * FROM tipotrem WHERE pk_tipotrem = " + id + "";
+        
+//            JOptionPane.showMessageDialog(null, query);
         
         try
-        {
-            tipotrem.setPk_tipotrem(id);
+        {                       
+            
+            if(Conexao.conexao == null) Conexao.getConexao();
 
-            preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, tipotrem.getPk_tipotrem());
-                        
+            preparedStatement = Conexao.conexao.prepareStatement(query);                        
+        
+            ResultSet rs = preparedStatement.executeQuery();
+
             tipotrem = new TipoTremModelo();
 
-            ResultSet rs = preparedStatement.executeQuery();
-            
-            tipotrem.setPk_tipotrem(rs.getInt("pk_tipotrem"));
-            tipotrem.setNome(rs.getString("nome"));
+            tipotrem = new TipoTremModelo();
+
+            while(rs.next())
+            {
+                tipotrem.setPk_tipotrem(rs.getInt(1));
+                tipotrem.setNome(rs.getString(2));
+            }
          
-            Conexao.fecharConexao();
-        
+//            JOptionPane.showMessageDialog(null, tipotrem.toString());
+                    
             return tipotrem;
         
         }catch(Exception e)

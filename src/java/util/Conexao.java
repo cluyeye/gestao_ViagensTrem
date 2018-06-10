@@ -22,7 +22,7 @@ public class Conexao
     public static void getConexao()
     {
         String driver = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost:5432/universidadedb";
+        String url = "jdbc:postgresql://localhost:5432/ucandb";
             
         String username = "postgres";
         String senha = "postgres";
