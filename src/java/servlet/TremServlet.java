@@ -6,12 +6,17 @@
 
 package servlet;
 
+import dao.TremDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
+import modelo.EngenheiroModelo;
+import modelo.TipoTremModelo;
+import modelo.TremModelo;
 
 /**
  *
@@ -29,22 +34,37 @@ public class TremServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TremServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TremServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
+            throws ServletException, IOException 
+    {
+        String matricula = request.getParameter ("matricula");
+        int engenheiro = Integer.parseInt(request.getParameter ("engenheiro"));
+        int tipotrem = Integer.parseInt(request.getParameter ("tipotrem"));
+        
+        TremModelo trem = new TremModelo();
+        
+        EngenheiroModelo eng = new EngenheiroModelo();
+        eng.setPk_engenheiro(engenheiro);
+
+        TipoTremModelo tt = new TipoTremModelo();
+        tt.setPk_tipotrem(tipotrem);
+
+        trem.setMatricula(matricula);
+        trem.setEngenheiro(eng);
+        trem.setTipoTrem(tt);
+                
+        JOptionPane.showMessageDialog(null, trem.toString());
+        
+        TremDAO tremDAO = new TremDAO(trem);
+        
+        if( tremDAO.inserir(trem))
+        {
+            JOptionPane.showMessageDialog(null, "Registo efectuado com sucesso");
+            response.sendRedirect("trem.jsp");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao Registo Trem, por favor verifique se o Trem já foi Registado","Erro", JOptionPane.ERROR_MESSAGE);
+            response.sendRedirect("trem.jsp");
         }
     }
 

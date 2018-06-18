@@ -70,7 +70,7 @@ public class ProvinciaDAO
     public ProvinciaModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM provincia WHERE pk_provincia = " + id;
+        String query ="SELECT pk_provincia, fk_pais, nome FROM provincia WHERE pk_provincia = " + id;
         
         try
         {

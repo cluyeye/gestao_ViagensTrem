@@ -81,8 +81,6 @@ public class TipoTremDAO
 
             tipotrem = new TipoTremModelo();
 
-            tipotrem = new TipoTremModelo();
-
             while(rs.next())
             {
                 tipotrem.setPk_tipotrem(rs.getInt(1));

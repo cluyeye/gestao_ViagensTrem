@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import javax.swing.JOptionPane;
 import modelo.PessoaModelo;
 import util.Conexao;
@@ -45,9 +44,6 @@ public class PessoaDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                            
-            preparedStatement.setDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis()));
-            preparedStatement.setDate(9, new Date( pessoa.getDataCriacao().getTimeInMillis()));
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
@@ -65,7 +61,10 @@ public class PessoaDAO
                 pessoa.setNome(rs.getString(5));
                 pessoa.setSobrenome(rs.getString(6));
                 pessoa.setTelefone(rs.getString(7));
-                
+//                
+//                pessoa.setDataNascimento(rs.getString(8));
+//                pessoa.setDataCriacao(rs.getString(9));
+//             
                 lista.add(pessoa);
             }
 
@@ -88,14 +87,16 @@ public class PessoaDAO
             if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-                        
-            preparedStatement.setDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis()));
-            preparedStatement.setDate(9, new Date( pessoa.getDataCriacao().getTimeInMillis()));
+//                        
+//            preparedStatement.setDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis()));
+//            preparedStatement.setDate(9, new Date( pessoa.getDataCriacao().getTimeInMillis()));
 
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {    
+            {   
+                pessoa = new PessoaModelo();
+                
                 pessoa.setPk_pessoa(rs.getInt(1));
                 pessoa.setSexo(
                         new SexoDAO().getByID(rs.getInt(2))
@@ -109,11 +110,14 @@ public class PessoaDAO
                 pessoa.setNome(rs.getString(5));
                 pessoa.setSobrenome(rs.getString(6));
                 pessoa.setTelefone(rs.getString(7));
+                
+                pessoa.setDataNascimento(rs.getString(8));
+                pessoa.setDataCriacao(rs.getString(9));
 //                pessoa.setDataNascimento(rs.getDate(8, new Date( pessoa.getDataNascimento().getTimeInMillis())));
 //                pessoa.setDataCriacao(rs.getDate(8, new Date( pessoa.getDataCriacao().getTimeInMillis()));
             }
 
-            Conexao.fecharConexao();
+//            Conexao.fecharConexao();
         
             return pessoa;
         

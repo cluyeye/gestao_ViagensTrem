@@ -49,18 +49,18 @@ public class Conexao
     
     public static void fecharConexao()
     {
-        try 
-        {
-            statement.close();
-            conexao.close();
-            
-            statement = null;
-            conexao = null;
-        }
-        
-        catch (SQLException ex) 
-        {
-            System.err.println("Erro de SQL: " + ex.getMessage());
-        }
+//        try 
+//        {
+//            statement.close();
+//            conexao.close();
+//            
+//            statement = null;
+//            conexao = null;
+//        }
+//        
+//        catch (SQLException ex) 
+//        {
+//            System.err.println("Erro de SQL: " + ex.getMessage());
+//        }
     }
 }

@@ -4,12 +4,16 @@
     Author     : coxe
 --%>
 
-<%@page import="dao.TipoTremDAO"%>
-<%@page import="dao.EngenheiroDAO"%>
-<%@page import="modelo.TipoTremModelo"%>
-<%@page import="modelo.EngenheiroModelo"%>
-<%@page import="dao.TremDAO" %>
-<%@page import="modelo.TremModelo" %>
+<%@page import="dao.TremDAO"%>
+<%@page import="modelo.TremModelo"%>
+<%@page import="dao.EstacaoDAO"%>
+<%@page import="modelo.EstacaoModelo"%>
+<%@page import="dao.TipoViagemDAO"%>
+<%@page import="dao.MunicipioDAO"%>
+<%@page import="modelo.TipoViagemModelo"%>
+<%@page import="modelo.MunicipioModelo"%>
+<%@page import="dao.TremEstacaoDAO" %>
+<%@page import="modelo.TremEstacaoModelo" %>
 <%@page import="java.util.ArrayList" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,7 +23,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>T-Travel | Trem</title>
+        <title>T-Travel | Viagem</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
@@ -42,35 +46,6 @@
                                       
                     
                     <ul class="nav navbar-top-links navbar-left">
-                        <li class="dropdown">
-                            <!--<ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-                                        </a>
-                                        <div class="message-body"><small class="pull-right">3 mins ago</small>
-                                            <a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-                                            <br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-                                        </a>
-                                        <div class="message-body"><small class="pull-right">1 hour ago</small>
-                                            <a href="#">New message from <strong>Jane Doe</strong>.</a>
-                                            <br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="all-button"><a href="#">
-                                            <em class="fa fa-inbox"></em> <strong>All Messages</strong>
-                                        </a></div>
-                                </li>
-                            </ul>-->
-                        </li>
                         
                         <li class="dropdown">
                             <a data-toggle="dropdown" href="#">
@@ -79,14 +54,14 @@
                             
                             <ul class="dropdown-menu dropdown-messages">
                                 <li class="item">
-                                    <a href="endereco.jsp">
+                                    <a href="enderecoestacao.jsp">
                                         <em class="fa fa-address-card"></em>&nbsp;Endereço
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li class="item">
                                     <a href="engenheiro.jsp">
-                                        <em class="fa fa-user-circle-o"></em>&nbsp;Engenheiro
+                                        <em class="fa fa-user-circle-o"></em>&nbsp;Municipio
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -149,13 +124,13 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a href="tipoestacao.jsp">
-                                        <em class="fa fa-table"></em>&nbsp;Tipo de Estação
+                                        <em class="fa fa-table"></em>&nbsp;Tipo de Viagem
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="tipotrem.jsp">
-                                        <em class="fa fa-table"></em>&nbsp;Tipos de Trem
+                                        <em class="fa fa-table"></em>&nbsp;Tipos de Viagem
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -170,21 +145,7 @@
                         
                     </ul>
                     
-                    <ul class="nav navbar-top-links navbar-right">
-                        <!--
-                            <li class="dropdown"><a data-toggle="dropdown" href="#">
-
-                                    <div class="profile-sidebar" style="margin: 0; padding: 0;">
-
-                                        <div class="profile-usertitle" style="margin: 0; padding: 0;">
-                                            <div class="profile-usertitle-name"><small>Username</small></div>
-                                            <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
-                                        </div>
-                                        <div class="clear"></div>
-                                    </div>
-                                </a>
-                            </li>
-                        -->
+                    <ul class="nav navbar-top-links navbar-right">                        
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <em class="fa fa-user"></em>
@@ -215,40 +176,42 @@
                     <li><a href="index.jsp">
                             <em class="fa fa-home"></em>
                         </a></li>
-                    <li class="active">Trem</li>
+                    <li class="active">Viagem</li>
                 </ol>
             </div><!--/.row-->
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><em class="fa fa-train text-primary"></em>&nbsp;Gestão de Trens</h1>
+                    <h1 class="page-header"><em class="fa fa-send-o text-primary"></em>&nbsp;Gestão de Viagens</h1>
                 </div>
 
                 <div class="col-md-12">
                     <div class="col-md-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Pesquisar " v-model="filtroTrem" aria-label="Pesquisar">
+                            <input type="text" class="form-control" placeholder="Pesquisar " v-model="filtroViagem" aria-label="Pesquisar">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="button"><i class="fa fa-search"></i>&nbsp; Pesquisar</button>
                             </span>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#newTremModal">
-                            <i class="fa fa-plus fa-fw"></i> Novo Trem
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#newViagemModal">
+                            <i class="fa fa-plus fa-fw"></i> Nova Marcação
                         </button>
                     </div>
                 </div>
 
                 <% 
+                    ArrayList<TremEstacaoModelo> viagens = new TremEstacaoDAO().listar();
+                    ArrayList<EstacaoModelo> estacoes = new EstacaoDAO().listar();
                     ArrayList<TremModelo> trens = new TremDAO().listar();
-                    ArrayList<EngenheiroModelo> engenheiros = new EngenheiroDAO().listar();
-                    ArrayList<TipoTremModelo> tiposTrem = new TipoTremDAO().listar();
+                    
+                    ArrayList<TipoViagemModelo> tiposViagem = new TipoViagemDAO().listar();
 
-                    if (trens == null) {
+                    if (viagens == null || viagens.size() == 0) {
                 %>                            
                 <div class="col-md-12" align="center">
-                    <h2>Sem Resultados</h2> <%=trens%>
+                    <h2>Sem Resultados</h2> <%=viagens %>
                 </div> 
                 <%
                 } else {
@@ -260,16 +223,15 @@
                             <tr>
                                 <th></th>
                                 <th>ID</th>
-                                <th>Matricula</th>
-                                <th>Tipo</th>
-                                <th>Engenheiro</th>
-                                <th>Sexo</th>
-                                <th>Telefone</th>
+                                <th>Trem</th>
+                                <th>Estação</th>
+                                <th>Tipo de Viagem</th>
+                                <th>Data</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                                for (TremModelo t : trens) {
+                                for (TremEstacaoModelo v : viagens) {
                             %>
                             <tr>
                                 <td>
@@ -279,21 +241,19 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li class="dropdown-item text-left">
-                                                <a data-toggle="modal" data-target="#newTremModal">&nbsp;<i class="fa fa-edit"></i>&nbsp;Editar</a>
-                                                <a data-toggle="modal" data-target="#deleteTremModal">&nbsp;<i class="fa fa-trash"></i>&nbsp;Eliminar</a>
+                                                <a data-toggle="modal" data-target="#newViagemModal">&nbsp;<i class="fa fa-edit"></i>&nbsp;Editar</a>
+                                                <a data-toggle="modal" data-target="#deleteViagemModal">&nbsp;<i class="fa fa-trash"></i>&nbsp;Eliminar</a>
                                             </li>
-
 
                                         </ul>
                                     </div>
                                 </td>
-                                <td><%=t.getPk_trem()%></td>
-                                <td><%=t.getMatricula() %></td>
-                                <td><%=t.getEngenheiro().getPessoa().getNome()%>&nbsp;<%=t.getEngenheiro().getPessoa().getSobrenome()%></td>
-                                <td><%=t.getEngenheiro().getPessoa().getSexo().getNome() %></td>
-                                <td><%=t.getEngenheiro().getPessoa().getTelefone() %></td>
-                                <td><%=t.getTipoTrem().getNome()%></td>
 
+
+                                <td><%=v.getTrem().getMatricula() %></td>
+                                <td><%=v.getEstacao().getNome() %></td>
+                                <td><%=v.getTipoViagem().getNome()%></td>
+                                <td><%=v.getDataViagem() %>&nbsp;<%=v.getHoraViagem() %></td>
                             </tr>
                             <%
                                     }
@@ -305,65 +265,107 @@
                 </div> 
 
 
-                <form name="newTrem" method="post" action="TremServlet">
+                <form name="newViagem" method="post" action="ViagemServlet">
 
-                    <div class="modal fade" id="newTremModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal fade" id="newViagemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-train"></i>&nbsp;Trem</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-send-o"></i>&nbsp;Viagem</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 text-left">
-                                            <label class="col-form-label">Matricula</label>
+                                <div class="row">
+                                    <!--
+                                    <div class="col-md-6">  
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Trem</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" required name="trem" >
+                                                    <option value="-1">Seleccione uma opção</option>
+                                                            <%
+                                                                for (TremModelo t : trens) {
+                                                            %>
+                                                    <option value=<%=t.getPk_trem()%>>
+                                                            <%=t.getMatricula()%>
+                                                    </option>
+                                                            <%
+                                                                }
+                                                            %>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <input type="text" name="matricula" class="form-control" maxlength="100" required placeholder="Matrícula">
+                                        
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Estação</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" required name="estacao" >
+                                                    <option value="-1">Seleccione uma opção</option>
+                                                    <%
+                                                        for (EstacaoModelo e : estacoes) {
+                                                    %>
+                                                    <option value=<%=e.getPk_estacao()%>><%=e.getNome()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 text-left">
-                                            <label class="col-form-label">Engenheiro</label>
+                                                
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Tipo de Viagem</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" required name="tipoviagem">
+                                                    <option value="-1">Seleccione uma opção</option>
+                                                    <%
+                                                        for (TipoViagemModelo tt : tiposViagem) {
+                                                    %>
+                                                    <option value=<%=tt.getPk_tipoviagem()%>>
+                                                        <%=tt.getNome()%>
+                                                    </option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <select class="form-control" required name="engenheiro" >
-                                                <option value="-1">Seleccione uma opção</option>
-                                                <%
-                                                    for (EngenheiroModelo e : engenheiros) {
-                                                %>
-                                                <option value=<%=e.getPk_engenheiro() %>>
-                                                    <%=e.getPessoa().getNome() %>&nbsp;<%=e.getPessoa().getSobrenome() %>
-                                                </option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select>
+                                                
+                                    </div> 
+                                                
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Data de Viagem</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <input type="text" name="dataviagem" class="form-control" maxlength="100" required placeholder="Data de Viagem">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 text-left">
-                                            <label class="col-form-label">Tipo de Trem</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Hora de Viagem</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <input type="text" name="horaviagem" class="form-control" maxlength="100" required placeholder="Hora de Viagem">
+                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <select class="form-control" required name="tipotrem" >
-                                            <option value="-1">Seleccione uma opção</option>
-                                            <%
-                                                for (TipoTremModelo tt : tiposTrem) {
-                                            %>
-                                            <option value=<%=tt.getPk_tipotrem() %>><%=tt.getNome() %></option>
-                                            <%
-                                                }
-                                            %>
-                                            </select>
-                                        </div>
+
                                     </div>
+                                    -->
+                                </div>
 
                                 </div>
                                 <div class="modal-footer">
@@ -376,12 +378,12 @@
                 </form>
 
                                             
-                <form name="deleteTrem" method="post" action="TremServlet">
-                    <div class="modal fade" id="deleteTremModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <form name="deleteViagem" method="post" action="ViagemServlet">
+                    <div class="modal fade" id="deleteViagemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-sm" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-train"></i>&nbsp;Eliminar Trem</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-train"></i>&nbsp;Eliminar Viagem</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <sup aria-hidden="true">&times;</sup>
                                     </button>
@@ -390,7 +392,7 @@
                                      <%
                                                 
                                      %>
-                                    <h4>Tem a certeza que pretende eliminar o Trem</h4>
+                                    <h4>Tem a certeza que pretende eliminar o Viagem</h4>
 
                                 </div>
                                 <div class="modal-footer">

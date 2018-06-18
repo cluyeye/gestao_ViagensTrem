@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.EnderecoEstacaoModelo;
 import modelo.EstacaoModelo;
 import util.Conexao;
 
@@ -21,6 +22,7 @@ import util.Conexao;
 public class EstacaoDAO 
 {
     private EstacaoModelo estacao;
+    private EnderecoEstacaoDAO enderecoestacaoDAO;
     private PreparedStatement preparedStatement;
 
     public EstacaoDAO() { }
@@ -34,7 +36,7 @@ public class EstacaoDAO
     {
         ArrayList<EstacaoModelo> lista = new ArrayList<EstacaoModelo>();
         
-        String query ="SELECT pk_estacao, nome, fk_tipoestacao, fk_endereco FROM estacao";
+        String query ="SELECT pk_estacao, nome, fk_tipoestacao, fk_enderecoestacao FROM estacao";
         
         try
         {
@@ -53,12 +55,15 @@ public class EstacaoDAO
                 estacao.setTipoEstacao(
                         new TipoEstacaoDAO().getByID(rs.getInt("fk_tipoestacao"))                        
                 );
-                estacao.setEndereco(
-                        new EnderecoDAO().getByID(rs.getInt("fk_endereco"))                        
+                estacao.setEnderecoEstacao(
+                        new EnderecoEstacaoDAO().getByID(rs.getInt("fk_enderecoestacao"))                        
                 );
+            
                 
                 lista.add(estacao);
             }
+                
+//            JOptionPane.showMessageDialog(null, lista.toString());
 
         }catch(Exception e)
         {
@@ -90,8 +95,8 @@ public class EstacaoDAO
             estacao.setTipoEstacao(
                     new TipoEstacaoDAO().getByID(rs.getInt("fk_tipoestacao"))                        
             );
-            estacao.setEndereco(
-                    new EnderecoDAO().getByID(rs.getInt("fk_endereco"))                        
+            estacao.setEnderecoEstacao(
+                    new EnderecoEstacaoDAO().getByID(rs.getInt("fk_enderecoestacao"))                        
             );
          
             Conexao.fecharConexao();
@@ -110,23 +115,30 @@ public class EstacaoDAO
      
     public Boolean inserir(EstacaoModelo estacao)
     {
-        if ( estacaoNaoExiste())
-        {
-            String query = "INSERT INTO estacao(nome, fk_tipoestacao, fk_endereco) VALUES(?, ?)";
+//        if ( estacaoNaoExiste())
+//        {
+            String query = "INSERT INTO estacao(nome, fk_tipoestacao, fk_enderecoestacao) VALUES(?, ?, ?)";
 
             try
             {
                 if (Conexao.conexao == null)
                     Conexao.getConexao ();
 
-                preparedStatement = Conexao.conexao.prepareStatement(query);                
-                preparedStatement.setInt(1, estacao.getTipoEstacao().getPk_tipoestacao());
-                preparedStatement.setInt(2, estacao.getTipoEstacao().getPk_tipoestacao());
-                preparedStatement.setInt(3, estacao.getEndereco().getPk_endereco());
+                enderecoestacaoDAO = new EnderecoEstacaoDAO();
+                EnderecoEstacaoModelo endereco = estacao.getEnderecoEstacao();
                 
-
+                enderecoestacaoDAO.inserir(endereco);
+                
+                int Pk_endereco = enderecoestacaoDAO.getIdEnderecoEstacao(estacao.getEnderecoEstacao());
+                estacao.getEnderecoEstacao().setPk_enderecoestacao(Pk_endereco);
+                
+                preparedStatement = Conexao.conexao.prepareStatement(query);                
+                preparedStatement.setString(1, estacao.getNome());
+                preparedStatement.setInt(2, estacao.getTipoEstacao().getPk_tipoestacao());
+                preparedStatement.setInt(3, estacao.getEnderecoEstacao().getPk_enderecoestacao());
+                
                 preparedStatement.execute();
-
+                
                 Conexao.fecharConexao();
                 return true;
             }
@@ -135,7 +147,7 @@ public class EstacaoDAO
             {
                 System.out.println("Erro de SQL: " + excepcao.getMessage());
             }
-        }
+//        }
         
         return false;
     
@@ -143,7 +155,7 @@ public class EstacaoDAO
      
     public Boolean editar(EstacaoModelo estacao)
     {
-        String query = "UPDATE estacao SET fk_tipoestacao = ?, fk_endereco = ? WHERE pk_estacao = ?"; 
+        String query = "UPDATE estacao SET fk_tipoestacao = ?, fk_enderecoestacao = ? WHERE pk_estacao = ?"; 
 
         try
         {
@@ -156,7 +168,7 @@ public class EstacaoDAO
             preparedStatement = Conexao.conexao.prepareStatement(query);                
             preparedStatement.setString(1, estacao.getNome());
             preparedStatement.setInt(2, estacao.getTipoEstacao().getPk_tipoestacao());
-            preparedStatement.setInt(3, estacao.getEndereco().getPk_endereco());
+            preparedStatement.setInt(3, estacao.getEnderecoEstacao().getPk_enderecoestacao());
             preparedStatement.setInt(4, estacao.getPk_estacao());
 
             preparedStatement.execute();

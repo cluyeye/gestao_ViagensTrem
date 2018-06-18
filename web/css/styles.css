@@ -233,10 +233,17 @@ a.bg-primary:hover {
   color: #fff;
   background-color: #8ad919; }
 
+.bg-white {
+  color: #fff;
+  background-color: #ffffff; }
+
 a.bg-success:hover, a.bg-green:hover {
   background-color: #8ad919; }
 
-.bg-success a, .bg-green a {
+a.bg-white:hover {
+  background-color: white; }
+
+.bg-success a, .bg-green a, .bg-white a {
   color: rgba(255, 255, 255, 0.75); }
 
 .bg-teal {

@@ -8,6 +8,50 @@
         <servlet-name>PaisServlet</servlet-name>
         <servlet-class>servlet.PaisServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DefesaServlet</servlet-name>
+        <servlet-class>servlet.DefesaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EngenheiroServlet</servlet-name>
+        <servlet-class>servlet.EngenheiroServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EnderecoServlet</servlet-name>
+        <servlet-class>servlet.EnderecoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EstacaoServlet</servlet-name>
+        <servlet-class>servlet.EstacaoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EstadoCivilServlet</servlet-name>
+        <servlet-class>servlet.EstadoCivilServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MunicipioServlet</servlet-name>
+        <servlet-class>servlet.MunicipioServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProvinciaServlet</servlet-name>
+        <servlet-class>servlet.ProvinciaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SexoServlet</servlet-name>
+        <servlet-class>servlet.SexoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TipoEstacaoServlet</servlet-name>
+        <servlet-class>servlet.TipoEstacaoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TipoTremServlet</servlet-name>
+        <servlet-class>servlet.TipoTremServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TipoViagemServlet</servlet-name>
+        <servlet-class>servlet.TipoViagemServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TremServlet</servlet-name>
         <url-pattern>/TremServlet</url-pattern>
@@ -15,6 +59,50 @@
     <servlet-mapping>
         <servlet-name>PaisServlet</servlet-name>
         <url-pattern>/PaisServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DefesaServlet</servlet-name>
+        <url-pattern>/DefesaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EngenheiroServlet</servlet-name>
+        <url-pattern>/EngenheiroServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnderecoServlet</servlet-name>
+        <url-pattern>/EnderecoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EstacaoServlet</servlet-name>
+        <url-pattern>/EstacaoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EstadoCivilServlet</servlet-name>
+        <url-pattern>/EstadoCivilServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MunicipioServlet</servlet-name>
+        <url-pattern>/MunicipioServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProvinciaServlet</servlet-name>
+        <url-pattern>/ProvinciaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SexoServlet</servlet-name>
+        <url-pattern>/SexoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TipoEstacaoServlet</servlet-name>
+        <url-pattern>/TipoEstacaoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TipoTremServlet</servlet-name>
+        <url-pattern>/TipoTremServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TipoViagemServlet</servlet-name>
+        <url-pattern>/TipoViagemServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

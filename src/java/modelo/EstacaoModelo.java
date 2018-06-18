@@ -15,24 +15,24 @@ public class EstacaoModelo
     private int pk_estacao;
     private String nome;
     private TipoEstacaoModelo tipoestacao;
-    private EnderecoModelo endereco;
+    private EnderecoEstacaoModelo enderecoestacao;
 
     public EstacaoModelo() {
     }
 
-    public EstacaoModelo(int pk_estacao, String nome, TipoEstacaoModelo tipoestacao, EnderecoModelo endereco) {
+    public EstacaoModelo(int pk_estacao, String nome, TipoEstacaoModelo tipoestacao, EnderecoEstacaoModelo enderecoestacao) {
         this.pk_estacao = pk_estacao;
         this.nome = nome;
         this.tipoestacao = tipoestacao;
-        this.endereco = endereco;
+        this.enderecoestacao = enderecoestacao;
     }
 
-    public EnderecoModelo getEndereco() {
-        return endereco;
+    public EnderecoEstacaoModelo getEnderecoEstacao() {
+        return enderecoestacao;
     }
 
-    public void setEndereco(EnderecoModelo endereco) {
-        this.endereco = endereco;
+    public void setEnderecoEstacao(EnderecoEstacaoModelo enderecoestacao) {
+        this.enderecoestacao = enderecoestacao;
     }
 
     public int getPk_estacao() {
@@ -61,7 +61,7 @@ public class EstacaoModelo
 
     @Override
     public String toString() {
-        return "EstacaoModelo{" + "pk_estacao=" + pk_estacao + ", nome=" + nome + ", tipoestacao=" + tipoestacao + ", endereco=" + endereco + '}';
+        return "EstacaoModelo{" + "pk_estacao=" + pk_estacao + ", nome=" + nome + ", tipoestacao=" + tipoestacao + ", enderecoestacao=" + enderecoestacao + '}';
     }
            
 }

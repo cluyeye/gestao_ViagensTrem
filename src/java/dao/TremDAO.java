@@ -34,8 +34,7 @@ public class TremDAO
     {
         ArrayList<TremModelo> lista = new ArrayList<TremModelo>();
         
-//        String query ="SELECT pk_trem, fk_engenheiro, fk_tipotrem FROM trem";
-        String query ="SELECT pk_trem, fk_tipotrem FROM trem";
+        String query ="SELECT pk_trem, matricula, fk_engenheiro, fk_tipotrem FROM trem";
         
         try
         {
@@ -50,15 +49,14 @@ public class TremDAO
                 trem = new TremModelo();
                 
                 trem.setPk_trem(rs.getInt(1));
+                trem.setMatricula(rs.getString(2));
                 trem.setEngenheiro(
-                        new EngenheiroDAO().getByID(rs.getInt(2))                        
+                        new EngenheiroDAO().getByID(rs.getInt(3))                        
                 );
                 trem.setTipoTrem(
-                        new TipoTremDAO().getByID(rs.getInt(3))                        
+                        new TipoTremDAO().getByID(rs.getInt(4))                        
                 );
-                
-                JOptionPane.showMessageDialog(null, trem.toString());
-                
+                                
                 lista.add(trem);
             }
     
@@ -90,6 +88,7 @@ public class TremDAO
             ResultSet rs = preparedStatement.executeQuery();
             
             trem.setPk_trem(rs.getInt("pk_trem"));
+            trem.setMatricula(rs.getString("matricula"));
             trem.setTipoTrem(
                     new TipoTremDAO().getByID(rs.getInt("fk_tipotrem"))                        
             );
@@ -113,9 +112,9 @@ public class TremDAO
      
     public Boolean inserir(TremModelo trem)
     {
-        if ( tremNaoExiste())
-        {
-            String query = "INSERT INTO trem(fk_tipotrem, fk_engenheiro) VALUES(?, ?)";
+//        if ( tremNaoExiste(trem))
+//        {
+            String query = "INSERT INTO trem(matricula, fk_engenheiro, fk_tipotrem) VALUES(?, ?, ?)";
 
             try
             {
@@ -123,10 +122,10 @@ public class TremDAO
                     Conexao.getConexao ();
 
                 preparedStatement = Conexao.conexao.prepareStatement(query);                
-                preparedStatement.setInt(1, trem.getTipoTrem().getPk_tipotrem());
+                preparedStatement.setString(1, trem.getMatricula());
                 preparedStatement.setInt(2, trem.getEngenheiro().getPk_engenheiro());
+                preparedStatement.setInt(3, trem.getTipoTrem().getPk_tipotrem());
                 
-
                 preparedStatement.execute();
 
                 Conexao.fecharConexao();
@@ -137,7 +136,7 @@ public class TremDAO
             {
                 System.out.println("Erro de SQL: " + excepcao.getMessage());
             }
-        }
+//        }
         
         return false;
     
@@ -145,7 +144,7 @@ public class TremDAO
      
     public Boolean editar(TremModelo trem)
     {
-        String query = "UPDATE trem SET fk_tipotrem = ?, fk_engenheiro = ? WHERE pk_trem = ?"; 
+        String query = "UPDATE trem SET matricula = ?, fk_tipotrem = ?, fk_engenheiro = ? WHERE pk_trem = ?"; 
 
         try
         {
@@ -156,9 +155,10 @@ public class TremDAO
             JOptionPane.showMessageDialog(null, query);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);                
-            preparedStatement.setInt(1, trem.getTipoTrem().getPk_tipotrem());
-            preparedStatement.setInt(2, trem.getEngenheiro().getPk_engenheiro());
-            preparedStatement.setInt(3, trem.getPk_trem());
+            preparedStatement.setString(1, trem.getMatricula());
+            preparedStatement.setInt(2, trem.getTipoTrem().getPk_tipotrem());
+            preparedStatement.setInt(3, trem.getEngenheiro().getPk_engenheiro());
+            preparedStatement.setInt(4, trem.getPk_trem());
 
             preparedStatement.execute();
 
@@ -192,9 +192,9 @@ public class TremDAO
     
     }
     
-    public boolean tremNaoExiste ()
+    public boolean tremNaoExiste (TremModelo trem)
     {
-        String query = "SELECT pk_trem FROM trem WHERE nome = ?";
+        String query = "SELECT pk_trem FROM trem WHERE pk_en = ";
         
         try
         {
@@ -224,7 +224,7 @@ public class TremDAO
         try
         {
             
-            String query = "SELECT pk_trem FROM trem WHERE nome = ?";
+            String query = "SELECT pk_trem FROM trem WHERE matricula = ?";
             
             
             if (Conexao.conexao == null)

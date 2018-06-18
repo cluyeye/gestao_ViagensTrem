@@ -6,18 +6,24 @@
 
 package servlet;
 
+import dao.EstacaoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
+import modelo.EnderecoEstacaoModelo;
+import modelo.EstacaoModelo;
+import modelo.MunicipioModelo;
+import modelo.TipoEstacaoModelo;
 
 /**
  *
  * @author coxe
  */
-public class PaisServlet extends HttpServlet {
+public class EstacaoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,10 +35,43 @@ public class PaisServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-    }
+            throws ServletException, IOException 
+    {
+        String nome = request.getParameter ("nome");
+        String cidade = request.getParameter ("cidade");
+        String numero = request.getParameter ("numero");
+        int municipio = Integer.parseInt(request.getParameter ("municipio"));
+        int tipoestacao = Integer.parseInt(request.getParameter ("tipoestacao"));
+        
+        EstacaoModelo estacao = new EstacaoModelo();
+        
+        MunicipioModelo mun = new MunicipioModelo();
+        mun.setPk_municipio(municipio);
+        
+        EnderecoEstacaoModelo end_e = new EnderecoEstacaoModelo();
+        end_e.setMunicipio(mun);
+        end_e.setCidade(cidade);
+        end_e.setNumero(numero);
+
+        TipoEstacaoModelo tt = new TipoEstacaoModelo();
+        tt.setPk_tipoestacao(tipoestacao);
+
+        estacao.setNome(nome);
+        estacao.setEnderecoEstacao(end_e);
+        estacao.setTipoEstacao(tt);
+                        
+        EstacaoDAO estacaoDAO = new EstacaoDAO(estacao);
+        
+        if( estacaoDAO.inserir(estacao))
+        {
+            JOptionPane.showMessageDialog(null, "Registo efectuado com sucesso");
+            response.sendRedirect("estacao.jsp");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao Registo Estacao, por favor verifique se o Estacao já foi Registado","Erro", JOptionPane.ERROR_MESSAGE);
+            response.sendRedirect("estacao.jsp");
+        }    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

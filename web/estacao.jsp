@@ -4,12 +4,14 @@
     Author     : coxe
 --%>
 
-<%@page import="dao.TipoTremDAO"%>
-<%@page import="dao.EngenheiroDAO"%>
-<%@page import="modelo.TipoTremModelo"%>
-<%@page import="modelo.EngenheiroModelo"%>
-<%@page import="dao.TremDAO" %>
-<%@page import="modelo.TremModelo" %>
+<%@page import="dao.EnderecoEstacaoDAO"%>
+<%@page import="modelo.EnderecoEstacaoModelo"%>
+<%@page import="dao.TipoEstacaoDAO"%>
+<%@page import="dao.MunicipioDAO"%>
+<%@page import="modelo.TipoEstacaoModelo"%>
+<%@page import="modelo.MunicipioModelo"%>
+<%@page import="dao.EstacaoDAO" %>
+<%@page import="modelo.EstacaoModelo" %>
 <%@page import="java.util.ArrayList" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,7 +21,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>T-Travel | Trem</title>
+        <title>T-Travel | Estação</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
@@ -42,35 +44,6 @@
                                       
                     
                     <ul class="nav navbar-top-links navbar-left">
-                        <li class="dropdown">
-                            <!--<ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-                                        </a>
-                                        <div class="message-body"><small class="pull-right">3 mins ago</small>
-                                            <a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-                                            <br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-                                        </a>
-                                        <div class="message-body"><small class="pull-right">1 hour ago</small>
-                                            <a href="#">New message from <strong>Jane Doe</strong>.</a>
-                                            <br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="all-button"><a href="#">
-                                            <em class="fa fa-inbox"></em> <strong>All Messages</strong>
-                                        </a></div>
-                                </li>
-                            </ul>-->
-                        </li>
                         
                         <li class="dropdown">
                             <a data-toggle="dropdown" href="#">
@@ -79,14 +52,14 @@
                             
                             <ul class="dropdown-menu dropdown-messages">
                                 <li class="item">
-                                    <a href="endereco.jsp">
+                                    <a href="enderecoestacao.jsp">
                                         <em class="fa fa-address-card"></em>&nbsp;Endereço
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li class="item">
                                     <a href="engenheiro.jsp">
-                                        <em class="fa fa-user-circle-o"></em>&nbsp;Engenheiro
+                                        <em class="fa fa-user-circle-o"></em>&nbsp;Municipio
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -155,7 +128,7 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a href="tipotrem.jsp">
-                                        <em class="fa fa-table"></em>&nbsp;Tipos de Trem
+                                        <em class="fa fa-table"></em>&nbsp;Tipos de Estacao
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -215,40 +188,41 @@
                     <li><a href="index.jsp">
                             <em class="fa fa-home"></em>
                         </a></li>
-                    <li class="active">Trem</li>
+                    <li class="active">Estação</li>
                 </ol>
             </div><!--/.row-->
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><em class="fa fa-train text-primary"></em>&nbsp;Gestão de Trens</h1>
+                    <h1 class="page-header"><em class="fa fa-star text-primary"></em>&nbsp;Gestão de Estações</h1>
                 </div>
 
                 <div class="col-md-12">
                     <div class="col-md-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Pesquisar " v-model="filtroTrem" aria-label="Pesquisar">
+                            <input type="text" class="form-control" placeholder="Pesquisar " v-model="filtroEstacao" aria-label="Pesquisar">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="button"><i class="fa fa-search"></i>&nbsp; Pesquisar</button>
                             </span>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#newTremModal">
-                            <i class="fa fa-plus fa-fw"></i> Novo Trem
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#newEstacaoModal">
+                            <i class="fa fa-plus fa-fw"></i> Nova Estação
                         </button>
                     </div>
                 </div>
 
                 <% 
-                    ArrayList<TremModelo> trens = new TremDAO().listar();
-                    ArrayList<EngenheiroModelo> engenheiros = new EngenheiroDAO().listar();
-                    ArrayList<TipoTremModelo> tiposTrem = new TipoTremDAO().listar();
+                    ArrayList<EstacaoModelo> estacoes = new EstacaoDAO().listar();
+                    ArrayList<MunicipioModelo> municipios = new MunicipioDAO().listar();
+                    ArrayList<EnderecoEstacaoModelo> end_estacoes = new EnderecoEstacaoDAO().listar();
+                    ArrayList<TipoEstacaoModelo> tiposEstacao = new TipoEstacaoDAO().listar();
 
-                    if (trens == null) {
+                    if (estacoes == null || estacoes.size() == 0) {
                 %>                            
                 <div class="col-md-12" align="center">
-                    <h2>Sem Resultados</h2> <%=trens%>
+                    <h2>Sem Resultados</h2> <%=estacoes%>
                 </div> 
                 <%
                 } else {
@@ -260,16 +234,18 @@
                             <tr>
                                 <th></th>
                                 <th>ID</th>
-                                <th>Matricula</th>
+                                <th>Nome</th>
+                                <th>Pais</th>
+                                <th>Província</th>
+                                <th>Municipio</th>
+                                <th>Cidade</th>
+                                <th>Estação</th>
                                 <th>Tipo</th>
-                                <th>Engenheiro</th>
-                                <th>Sexo</th>
-                                <th>Telefone</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                                for (TremModelo t : trens) {
+                                for (EstacaoModelo et : estacoes) {
                             %>
                             <tr>
                                 <td>
@@ -279,20 +255,22 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li class="dropdown-item text-left">
-                                                <a data-toggle="modal" data-target="#newTremModal">&nbsp;<i class="fa fa-edit"></i>&nbsp;Editar</a>
-                                                <a data-toggle="modal" data-target="#deleteTremModal">&nbsp;<i class="fa fa-trash"></i>&nbsp;Eliminar</a>
+                                                <a data-toggle="modal" data-target="#newEstacaoModal">&nbsp;<i class="fa fa-edit"></i>&nbsp;Editar</a>
+                                                <a data-toggle="modal" data-target="#deleteEstacaoModal">&nbsp;<i class="fa fa-trash"></i>&nbsp;Eliminar</a>
                                             </li>
-
 
                                         </ul>
                                     </div>
                                 </td>
-                                <td><%=t.getPk_trem()%></td>
-                                <td><%=t.getMatricula() %></td>
-                                <td><%=t.getEngenheiro().getPessoa().getNome()%>&nbsp;<%=t.getEngenheiro().getPessoa().getSobrenome()%></td>
-                                <td><%=t.getEngenheiro().getPessoa().getSexo().getNome() %></td>
-                                <td><%=t.getEngenheiro().getPessoa().getTelefone() %></td>
-                                <td><%=t.getTipoTrem().getNome()%></td>
+
+                                <td><%=et.getPk_estacao() %></td>
+                                <td><%=et.getNome() %></td>
+                                <td><%=et.getEnderecoEstacao().getMunicipio().getProvincia().getPais().getNome() %></td>
+                                <td><%=et.getEnderecoEstacao().getMunicipio().getProvincia().getNome() %></td>
+                                <td><%=et.getEnderecoEstacao().getMunicipio().getNome() %></td>
+                                <td><%=et.getEnderecoEstacao().getCidade()%></td>
+                                <td><%=et.getEnderecoEstacao().getNumero() %></td>
+                                <td><%=et.getTipoEstacao().getNome()%></td>
 
                             </tr>
                             <%
@@ -305,65 +283,91 @@
                 </div> 
 
 
-                <form name="newTrem" method="post" action="TremServlet">
+                <form name="newEstacao" method="post" action="EstacaoServlet">
 
-                    <div class="modal fade" id="newTremModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal fade" id="newEstacaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-train"></i>&nbsp;Trem</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-star"></i>&nbsp;Estacao</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 text-left">
-                                            <label class="col-form-label">Matricula</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Nome</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <input type="text" name="nome" class="form-control" maxlength="100" required placeholder="Nome">
+                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <input type="text" name="matricula" class="form-control" maxlength="100" required placeholder="Matrícula">
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Cidade</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <input type="text" name="cidade" class="form-control" maxlength="100" required placeholder="Cidade">
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 text-left">
-                                            <label class="col-form-label">Engenheiro</label>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Número</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <input type="text" name="numero" class="form-control" maxlength="100" required placeholder="Número">
+                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <select class="form-control" required name="engenheiro" >
-                                                <option value="-1">Seleccione uma opção</option>
-                                                <%
-                                                    for (EngenheiroModelo e : engenheiros) {
-                                                %>
-                                                <option value=<%=e.getPk_engenheiro() %>>
-                                                    <%=e.getPessoa().getNome() %>&nbsp;<%=e.getPessoa().getSobrenome() %>
-                                                </option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select>
-                                        </div>
+
                                     </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 text-left">
-                                            <label class="col-form-label">Tipo de Trem</label>
+                                    <div class="col-md-6">  
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Tipo de Estacao</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" required name="tipoestacao" >
+                                                    <option value="-1">Seleccione uma opção</option>
+                                                    <%
+                                                        for (TipoEstacaoModelo tt : tiposEstacao) {
+                                                    %>
+                                                    <option value=<%=tt.getPk_tipoestacao()%>><%=tt.getNome()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <select class="form-control" required name="tipotrem" >
-                                            <option value="-1">Seleccione uma opção</option>
-                                            <%
-                                                for (TipoTremModelo tt : tiposTrem) {
-                                            %>
-                                            <option value=<%=tt.getPk_tipotrem() %>><%=tt.getNome() %></option>
-                                            <%
-                                                }
-                                            %>
-                                            </select>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 text-left">
+                                                <label class="col-form-label">Municipio</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" required name="municipio" >
+                                                    <option value="-1">Seleccione uma opção</option>
+                                                            <%
+                                                                for (MunicipioModelo m : municipios) {
+                                                            %>
+                                                    <option value=<%=m.getPk_municipio()%>>
+                                                            <%=m.getNome() %>
+                                                    </option>
+                                                            <%
+                                                                }
+                                                            %>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </div>                                   
+                                </div>
 
                                 </div>
                                 <div class="modal-footer">
@@ -376,12 +380,12 @@
                 </form>
 
                                             
-                <form name="deleteTrem" method="post" action="TremServlet">
-                    <div class="modal fade" id="deleteTremModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <form name="deleteEstacao" method="post" action="EstacaoServlet">
+                    <div class="modal fade" id="deleteEstacaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-sm" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-train"></i>&nbsp;Eliminar Trem</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel"><i class="titulo fa fa-train"></i>&nbsp;Eliminar Estacao</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <sup aria-hidden="true">&times;</sup>
                                     </button>
@@ -390,7 +394,7 @@
                                      <%
                                                 
                                      %>
-                                    <h4>Tem a certeza que pretende eliminar o Trem</h4>
+                                    <h4>Tem a certeza que pretende eliminar o Estacao</h4>
 
                                 </div>
                                 <div class="modal-footer">

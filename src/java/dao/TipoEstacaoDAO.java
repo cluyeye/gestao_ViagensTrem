@@ -65,21 +65,23 @@ public class TipoEstacaoDAO
     public TipoEstacaoModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM tipoestacao WHERE pk_tipoestacao = ?";
+        String query ="SELECT * FROM tipoestacao WHERE pk_tipoestacao = " + id;
         
         try
         {
-            tipoestacao.setPk_tipoestacao(id);
+            if(Conexao.conexao == null) Conexao.getConexao();
 
-            preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, tipoestacao.getPk_tipoestacao());
-                        
-            tipoestacao = new TipoEstacaoModelo();
-
+            preparedStatement = Conexao.conexao.prepareStatement(query);                        
+        
             ResultSet rs = preparedStatement.executeQuery();
             
-            tipoestacao.setPk_tipoestacao(rs.getInt("pk_tipoestacao"));
-            tipoestacao.setNome(rs.getString("nome"));
+            tipoestacao = new TipoEstacaoModelo();
+
+            while(rs.next())
+            {
+                tipoestacao.setPk_tipoestacao(rs.getInt("pk_tipoestacao"));
+                tipoestacao.setNome(rs.getString("nome"));
+            }
          
             Conexao.fecharConexao();
         

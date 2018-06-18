@@ -29,72 +29,52 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span></button>
                     <a class="navbar-brand" href="index.jsp"><span>TREM</span><small>TRAVEL</small></a>
-                                        
-                    
+                      
                     <ul class="nav navbar-top-links navbar-left">
-                        <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <em class="fa fa-home"></em>
-                            </a>
-                            <!--<ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-                                        </a>
-                                        <div class="message-body"><small class="pull-right">3 mins ago</small>
-                                            <a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-                                            <br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
-                                        </a>
-                                        <div class="message-body"><small class="pull-right">1 hour ago</small>
-                                            <a href="#">New message from <strong>Jane Doe</strong>.</a>
-                                            <br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="all-button"><a href="#">
-                                            <em class="fa fa-inbox"></em> <strong>All Messages</strong>
-                                        </a></div>
-                                </li>
-                            </ul>-->
-                        </li>
                         
-                        <li class="dropdown"><a data-toggle="dropdown" href="#">
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" href="#">
                                 <em class="fa fa-cogs"></em>&nbsp;Gestão<em class="fa fa-arrow-down"></em>
                             </a> 
                             
                             <ul class="dropdown-menu dropdown-messages">
+                                <li class="item">
+                                    <a href="endereco.jsp">
+                                        <em class="fa fa-address-card"></em>&nbsp;Endereço
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li class="item">
+                                    <a href="engenheiro.jsp">
+                                        <em class="fa fa-user-circle-o"></em>&nbsp;Engenheiro
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="estacao.jsp">
+                                        <em class="fa fa-star"></em>&nbsp;Estação
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
                                 <li class="item">
                                     <a href="trem.jsp">
                                         <em class="fa fa-train"></em>&nbsp;Trem
                                     </a>
                                 </li>
                                 <li class="divider"></li>
-                                <li>
-                                    <a href="trem.jsp">
-                                        <em class="fa fa-star"></em>&nbsp;Estação
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                
                                 <li class="item">
-                                    <a href="pais.jsp">
-                                        <em class="fa fa-table"></em>&nbsp;Países
+                                    <a href="viagem.jsp">
+                                        <em class="fa fa-send-o"></em>&nbsp;Viagem
                                     </a>
                                 </li>
                             </ul>
                             
                         </li>
                                                 
-                        <li class="dropdown"><a data-toggle="dropdown" href="#">
-                                <em class="fa fa-table"></em>&nbsp;Tabelas
-                            </a>                            
-                        </li>                       
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" href="#">
+                                <em class="fa fa-table"></em>&nbsp;Tabelas<em class="fa fa-arrow-down"></em>
+                            </a>                 
                         
                             <ul class="dropdown-menu dropdown-messages">
                                 <li class="item">
@@ -104,13 +84,64 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="trem.jsp">
+                                    <a href="provincia.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Províncias
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="municipio.jsp">
                                         <em class="fa fa-table"></em>&nbsp;Munícipios
                                     </a>
                                 </li>
                                 <li class="divider"></li>
+                                <li>
+                                    <a href="estadocivil.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Estados Cívis
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="sexo.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Sexos
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="tipoestacao.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Tipo de Estação
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="tipotrem.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Tipos de Trem
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="tipoviagem.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Tipos de Viagens
+                                    </a>
+                                </li>
                                 
                             </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" href="#">
+                                <em class="fa fa-fort-awesome"></em>&nbsp;Defesa<em class="fa fa-arrow-down"></em>
+                            </a>                 
+                        
+                            <ul class="dropdown-menu dropdown-messages">
+                                <li class="item">
+                                    <a href="defesa.jsp">
+                                        <em class="fa fa-table"></em>&nbsp;Consulta
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li>
                     </ul>
                     
                     
@@ -167,18 +198,6 @@
                             </ul>
                         </li>-->
 
-                        <li class="dropdown"><a data-toggle="dropdown" href="#">
-                                
-                                <div class="profile-sidebar" style="margin: 0; padding: 0;">
-                
-                <div class="profile-usertitle" style="margin: 0; padding: 0;">
-                    <div class="profile-usertitle-name"><small>Username</small></div>
-                    <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
-                </div>
-                <div class="clear"></div>
-            </div>
-                            </a>
-                        </li>
                         <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <em class="fa fa-user"></em>
                             </a>

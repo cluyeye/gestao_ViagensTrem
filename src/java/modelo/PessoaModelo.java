@@ -6,7 +6,6 @@
 
 package modelo;
 
-import java.util.Calendar;
 
 /**
  *
@@ -19,27 +18,25 @@ public class PessoaModelo
     private String sobrenome;
     private String telefone;
     private SexoModelo sexo;
-    private String numeroBI;
     private EstadoCivilModelo estadoCivil;
-    private Calendar dataNascimento;
+    private String dataNascimento;
     private EnderecoModelo endereco;
-    private Calendar dataCriacao;
+    private String dataCriacao;
 
     public PessoaModelo()
     {
     }
 
-    public PessoaModelo(int pk_pessoa, String nome, String sobrenome, String telefone, SexoModelo sexo, String numeroBI, EstadoCivilModelo estadoCivil, Calendar dataNascimento, Calendar dataCriacao, EnderecoModelo endereco) {
+    public PessoaModelo(int pk_pessoa, String nome, String sobrenome, String telefone, SexoModelo sexo, EstadoCivilModelo estadoCivil, String dataNascimento, EnderecoModelo endereco, String dataCriacao) {
         this.pk_pessoa = pk_pessoa;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.telefone = telefone;
         this.sexo = sexo;
-        this.numeroBI = numeroBI;
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
-        this.dataCriacao = dataCriacao;
         this.endereco = endereco;
+        this.dataCriacao = dataCriacao;
     }
 
     public int getPk_pessoa() {
@@ -82,14 +79,6 @@ public class PessoaModelo
         this.sexo = sexo;
     }
 
-    public String getNumeroBI() {
-        return numeroBI;
-    }
-
-    public void setNumeroBI(String numeroBI) {
-        this.numeroBI = numeroBI;
-    }
-
     public EstadoCivilModelo getEstadoCivil() {
         return estadoCivil;
     }
@@ -98,11 +87,11 @@ public class PessoaModelo
         this.estadoCivil = estadoCivil;
     }
 
-    public Calendar getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Calendar dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -114,17 +103,20 @@ public class PessoaModelo
         this.endereco = endereco;
     }
 
-    public Calendar getDataCriacao() {
+    public String getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Calendar dataCriacao) {
+    public void setDataCriacao(String dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
     @Override
     public String toString() {
-        return "PessoaModelo{" + "pk_pessoa=" + pk_pessoa + ", nome=" + nome + ", sobrenome=" + sobrenome + ", telefone=" + telefone + ", sexo=" + sexo + ", numeroBI=" + numeroBI + ", estadoCivil=" + estadoCivil + ", dataNascimento=" + dataNascimento + ", endereco=" + endereco + ", dataCriacao=" + dataCriacao + '}';
+        return "PessoaModelo{" + "pk_pessoa=" + pk_pessoa + ", nome=" + nome + ", sobrenome=" + sobrenome + ", telefone=" + telefone + ", sexo=" + sexo + ", estadoCivil=" + estadoCivil + ", dataNascimento=" + dataNascimento + ", endereco=" + endereco + ", dataCriacao=" + dataCriacao + '}';
     }
+    
+    
+
     
 }

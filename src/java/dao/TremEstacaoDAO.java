@@ -35,7 +35,7 @@ public class TremEstacaoDAO
     {
         ArrayList<TremEstacaoModelo> lista = new ArrayList<TremEstacaoModelo>();
         
-        String query ="SELECT * FROM tremestacao";
+        String query ="SELECT fk_trem, fk_estacao, fk_tipoviagem, dataviagem, horaviagem FROM tremestacao";
         
         try
         {
@@ -60,7 +60,8 @@ public class TremEstacaoDAO
                         new TipoViagemDAO().getByID(rs.getInt("fk_tipoviagem"))                        
                 );
                 
-//                tremestacao.setDataViagem(rs.getDate("dataviagem"));
+                tremestacao.setDataViagem(rs.getString("dataviagem"));
+                tremestacao.setHoraViagem(rs.getString("horaviagem"));
                 
                 lista.add(tremestacao);
             }
@@ -74,7 +75,7 @@ public class TremEstacaoDAO
     
     }
       
-    public TremEstacaoModelo getByID(int fk_trem, int fk_estacao)
+    public TremEstacaoModelo getByID(TremEstacaoModelo tremestacao)
     {
         
         String query ="SELECT * FROM tremestacao WHERE fk_trem = ? AND fk_estacao = ?";
@@ -83,29 +84,29 @@ public class TremEstacaoDAO
         {
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, tremestacao.getTrem().getPk_trem());
-            preparedStatement.setInt(2, tremestacao.getEstacao().getPk_estacao());
-            preparedStatement.setInt(3, tremestacao.getTipoViagem().getPk_tipoviagem());
+//            preparedStatement.setInt(1, tremestacao.getTrem().getPk_trem());
+//            preparedStatement.setInt(2, tremestacao.getEstacao().getPk_estacao());
+//            preparedStatement.setInt(3, tremestacao.getTipoViagem().getPk_tipoviagem());
 //            preparedStatement.setDate(4, tremestacao.getDataViagem(), new Calendar);
-            preparedStatement.setInt(5, tremestacao.getTrem().getPk_trem());
-            preparedStatement.setInt(6, tremestacao.getEstacao().getPk_estacao());
+//            preparedStatement.setInt(5, tremestacao.getTrem().getPk_trem());
+//            preparedStatement.setInt(6, tremestacao.getEstacao().getPk_estacao());
                         
             tremestacao = new TremEstacaoModelo();
 
             ResultSet rs = preparedStatement.executeQuery();
             
             tremestacao.setTrem(
-                    new TremDAO().getByID(rs.getInt("fk_trem"))                        
+                    new TremDAO().getByID(rs.getInt(1))                        
             );
             tremestacao.setEstacao(
-                    new EstacaoDAO().getByID(rs.getInt("fk_estacao"))                        
+                    new EstacaoDAO().getByID(rs.getInt(2))                        
             );
             tremestacao.setTipoViagem(
-                    new TipoViagemDAO().getByID(rs.getInt("fk_tipoviagem"))                        
+                    new TipoViagemDAO().getByID(rs.getInt(3))                        
             );
-//            tremestacao.setDataViagem(
-//                    rs.getInt("dataviagem")                        
-//            );
+            
+            tremestacao.setDataViagem(rs.getString(4));
+            tremestacao.setHoraViagem(rs.getString(5));
          
             Conexao.fecharConexao();
         
@@ -118,14 +119,13 @@ public class TremEstacaoDAO
     
         return null;
     
-    }
-    
+    }    
      
     public Boolean inserir(TremEstacaoModelo tremestacao)
     {
         if ( tremestacaoNaoExiste())
         {
-            String query = "INSERT INTO tremestacao(fk_trem, fk_estacao, fk_tipoviagem, dataviagem) VALUES(?, ?, ?, ?)";
+            String query = "INSERT INTO tremestacao(fk_trem, fk_estacao, fk_tipoviagem, dataviagem, horaviagem) VALUES(?, ?, ?, ?, ?)";
 
             try
             {
@@ -136,8 +136,8 @@ public class TremEstacaoDAO
                 preparedStatement.setInt(1, tremestacao.getTrem().getPk_trem());
                 preparedStatement.setInt(2, tremestacao.getEstacao().getPk_estacao());            
                 preparedStatement.setInt(3, tremestacao.getTipoViagem().getPk_tipoviagem());
-                preparedStatement.setString(4, tremestacao.getDataViagem().toString());
-                
+                preparedStatement.setString(4, tremestacao.getDataViagem());
+                preparedStatement.setString(5, tremestacao.getHoraViagem());                
 
                 preparedStatement.execute();
 

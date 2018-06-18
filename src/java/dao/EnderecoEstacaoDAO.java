@@ -11,34 +11,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.EngenheiroModelo;
-import modelo.PessoaModelo;
+import modelo.EnderecoEstacaoModelo;
 import util.Conexao;
 
 /**
  *
  * @author coxe
  */
-public class EngenheiroDAO 
-{
-    private EngenheiroModelo engenheiro;
-    private PessoaModelo pessoa;
-
+public class EnderecoEstacaoDAO {
     
+    private EnderecoEstacaoModelo enderecoestacao;
     private PreparedStatement preparedStatement;
 
-    public EngenheiroDAO() { }
+    public EnderecoEstacaoDAO() { }
 
-    public EngenheiroDAO(EngenheiroModelo engenheiro)
+    public EnderecoEstacaoDAO(EnderecoEstacaoModelo enderecoestacao)
     {
-        this.engenheiro = engenheiro;
+        this.enderecoestacao = enderecoestacao;
     }
       
-    public ArrayList<EngenheiroModelo> listar()
+    public ArrayList<EnderecoEstacaoModelo> listar()
     {
-        ArrayList<EngenheiroModelo> lista = new ArrayList<EngenheiroModelo>();
+        ArrayList<EnderecoEstacaoModelo> lista = new ArrayList<EnderecoEstacaoModelo>();
+        EnderecoEstacaoModelo enderecoestacao;
         
-        String query ="SELECT pk_engenheiro, fk_pessoa FROM engenheiro";
+        String query ="SELECT pk_enderecoestacao, fk_municipio, cidade, numero FROM enderecoestacao";
         
         try
         {
@@ -46,20 +43,20 @@ public class EngenheiroDAO
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
                         
-
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
             {            
-                engenheiro = new EngenheiroModelo();
-        
-                engenheiro.setPk_engenheiro(rs.getInt("pk_engenheiro"));
-                engenheiro.setPessoa(
-                    new PessoaDAO().getByID(rs.getInt("fk_pessoa"))                        
+                enderecoestacao = new EnderecoEstacaoModelo();
+    
+                enderecoestacao.setPk_enderecoestacao(rs.getInt("pk_enderecoestacao"));
+                enderecoestacao.setMunicipio(
+                    new MunicipioDAO().getByID(rs.getInt("fk_municipio"))                        
                 );
+                enderecoestacao.setCidade(rs.getString("cidade"));
+                enderecoestacao.setNumero(rs.getString("numero"));
                 
-//                JOptionPane.showMessageDialog(null, engenheiro.toString());
-                lista.add(engenheiro);
+                lista.add(enderecoestacao);
             }
 
         }catch(Exception e)
@@ -71,21 +68,14 @@ public class EngenheiroDAO
     
     }
       
-    public EngenheiroModelo getByID(int id)
+    public EnderecoEstacaoModelo getByID(int id)
     {
         
-        String query ="SELECT * FROM engenheiro WHERE pk_engenheiro = " + id;
+        String query ="SELECT * FROM enderecoestacao WHERE pk_enderecoestacao = " + id;
         
         try
         {
 
-//            preparedStatement = Conexao.conexao.prepareStatement(query);
-//            preparedStatement.setInt(1, engenheiro.getPk_engenheiro());
-//                        
-//            
-//
-//            ResultSet rs = preparedStatement.executeQuery();
-            
             if(Conexao.conexao == null) Conexao.getConexao();
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
@@ -93,18 +83,20 @@ public class EngenheiroDAO
             ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next())
-            {            
-                engenheiro = new EngenheiroModelo();
-                
-                engenheiro.setPk_engenheiro(rs.getInt(1));
-                engenheiro.setPessoa(
-                    new PessoaDAO().getByID(rs.getInt(2))                        
+            {  
+                enderecoestacao = new EnderecoEstacaoModelo();
+
+                enderecoestacao.setPk_enderecoestacao(rs.getInt(1));
+                enderecoestacao.setMunicipio(
+                    new MunicipioDAO().getByID(rs.getInt(2))                        
                 );
+                enderecoestacao.setCidade(rs.getString(3));
+                enderecoestacao.setNumero(rs.getString(4));
             }
-         
+                
             Conexao.fecharConexao();
         
-            return engenheiro;
+            return enderecoestacao;
         
         }catch(Exception e)
         {
@@ -116,11 +108,11 @@ public class EngenheiroDAO
     }
     
      
-    public Boolean inserir(EngenheiroModelo engenheiro)
+    public Boolean inserir(EnderecoEstacaoModelo enderecoestacao)
     {
-        if ( engenheiroNaoExiste())
-        {
-            String query = "INSERT INTO engenheiro(fk_pessoa) VALUES(?)";
+//        if ( enderecoestacaoNaoExiste())
+//        {
+            String query = "INSERT INTO enderecoestacao(fk_municipio, cidade, numero) VALUES(?, ?, ?)";
 
             try
             {
@@ -128,10 +120,12 @@ public class EngenheiroDAO
                     Conexao.getConexao ();
 
                 preparedStatement = Conexao.conexao.prepareStatement(query);
-                preparedStatement.setInt(1, engenheiro.getPessoa().getPk_pessoa());
+                preparedStatement.setInt(1, enderecoestacao.getMunicipio().getPk_municipio());
+                preparedStatement.setString(2, enderecoestacao.getCidade());
+                preparedStatement.setString(3, enderecoestacao.getNumero());
 
                 preparedStatement.execute();
-
+                
                 Conexao.fecharConexao();
                 return true;
             }
@@ -140,15 +134,16 @@ public class EngenheiroDAO
             {
                 System.out.println("Erro de SQL: " + excepcao.getMessage());
             }
-        }
+//        }
         
         return false;
     
     }
      
-    public Boolean editar(EngenheiroModelo engenheiro)
+    public Boolean editar(EnderecoEstacaoModelo enderecoestacao)
     {
-        String query = "UPDATE engenheiro SET fk_pessoa = ? WHERE pk_engenheiro = ?"; 
+        String query = "UPDATE enderecoestacao SET fk_municipio = ?, cidade = ?"
+                     + ", rua = ?, numerocasa = ?, WHERE pk_enderecoestacao = ?"; 
 
         try
         {
@@ -159,8 +154,10 @@ public class EngenheiroDAO
             JOptionPane.showMessageDialog(null, query);
 
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, engenheiro.getPessoa().getPk_pessoa());
-            preparedStatement.setInt(2, engenheiro.getPk_engenheiro());
+            preparedStatement.setInt(1, enderecoestacao.getMunicipio().getPk_municipio());
+            preparedStatement.setString(2, enderecoestacao.getCidade());
+            preparedStatement.setString(3, enderecoestacao.getNumero());
+            preparedStatement.setInt(5, enderecoestacao.getPk_enderecoestacao());
 
             preparedStatement.execute();
 
@@ -176,14 +173,14 @@ public class EngenheiroDAO
     
     }
      
-    public void eliminar (EngenheiroModelo engenheiro)
+    public void eliminar (EnderecoEstacaoModelo enderecoestacao)
     {
-        String query = "DELETE FROM engenheiro WHERE pk_engenheiro = ?"; 
-        
+        String query = "DELETE FROM enderecoestacao WHERE pk_enderecoestacao = ?"; 
+
         try
         {      
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, engenheiro.getPk_engenheiro());
+            preparedStatement.setInt(1, enderecoestacao.getPk_enderecoestacao());
 
             preparedStatement.execute();        }
         catch(Exception e) {
@@ -191,11 +188,12 @@ public class EngenheiroDAO
         }
         
         Conexao.fecharConexao();
+    
     }
     
-    public boolean engenheiroNaoExiste ()
+    public boolean enderecoestacaoNaoExiste ()
     {
-        String query = "SELECT pk_engenheiro FROM engenheiro WHERE fk_pessoa = ?";
+        String query = "SELECT pk_enderecoestacao FROM enderecoestacao WHERE pk_enderecoestacao = ?";
         
         try
         {
@@ -203,7 +201,7 @@ public class EngenheiroDAO
                 Conexao.getConexao ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setInt(1, engenheiro.getPessoa().getPk_pessoa());
+            preparedStatement.setInt(1, enderecoestacao.getPk_enderecoestacao());
             
             ResultSet rs = preparedStatement.executeQuery();
             
@@ -220,33 +218,33 @@ public class EngenheiroDAO
         return true;
     }
     
-    public int getIdPais( String nome )
+    public int getIdEnderecoEstacao( EnderecoEstacaoModelo endereco)
     {
         try
         {
             
-            String query = "SELECT pk_engenheiro FROM engenheiro WHERE nome = ?";
+            String query = "SELECT pk_enderecoestacao FROM enderecoestacao WHERE fk_municipio = ? AND cidade = ? AND numero = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
-            
-            if (engenheiro == null)
-                engenheiro = new EngenheiroModelo ();
-            
+                        
             preparedStatement = Conexao.conexao.prepareStatement(query);
-            preparedStatement.setString(1, nome);
+            preparedStatement.setInt(1, endereco.getMunicipio().getPk_municipio());
+            preparedStatement.setString(2, endereco.getCidade());
+            preparedStatement.setString(3, endereco.getNumero());
             
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next ();
+            rs.next ();            
             
+            enderecoestacao = new EnderecoEstacaoModelo();
             
             if (rs.getInt(1) != 0)
             {
-                engenheiro.setPk_engenheiro(rs.getInt(1) );
+                enderecoestacao.setPk_enderecoestacao(rs.getInt(1) );
             }
             
-            return engenheiro.getPk_engenheiro();
+            return enderecoestacao.getPk_enderecoestacao();
         }
         
         catch (SQLException excepcao)
@@ -257,19 +255,19 @@ public class EngenheiroDAO
         return -1;
     }
     
-    public String getNomeCompleto( int codigo )
+    public String getCidade( int codigo )
     {
         try
         {
             
-            String query = "SELECT fk_pessoa FROM engenheiro WHERE pk_engenheiro = ?";
+            String query = "SELECT nome FROM enderecoestacao WHERE pk_enderecoestacao = ?";
             
             
             if (Conexao.conexao == null)
                 Conexao.getConexao ();
             
-            if (engenheiro == null)
-                engenheiro = new EngenheiroModelo ();
+            if (enderecoestacao == null)
+                enderecoestacao = new EnderecoEstacaoModelo ();
             
             preparedStatement = Conexao.conexao.prepareStatement(query);
             preparedStatement.setInt(1, codigo);
@@ -280,8 +278,10 @@ public class EngenheiroDAO
             
             if (rs.getString(1) != null)
             {
-                return new PessoaDAO().getNomeCompleto(rs.getInt(""));
+                enderecoestacao.setCidade(rs.getString(1) );
             }
+            
+            return enderecoestacao.getCidade();
         }
         
         catch (SQLException excepcao)
@@ -290,6 +290,5 @@ public class EngenheiroDAO
         }
 
         return null;
-    }
-    
+    } 
 }

@@ -36,7 +36,7 @@ public class EnderecoDAO
         ArrayList<EnderecoModelo> lista = new ArrayList<EnderecoModelo>();
         EnderecoModelo endereco;
         
-        String query ="SELECT pk_endereco, fk_municipio, bairro, rua, numeroCasa FROM endereco";
+        String query ="SELECT pk_endereco, fk_municipio, bairro, rua, numerocasa FROM endereco";
         
         try
         {
@@ -56,7 +56,7 @@ public class EnderecoDAO
                 );
                 endereco.setBairro(rs.getString("bairro"));
                 endereco.setRua(rs.getString("rua"));
-                endereco.setNumeroCasa(rs.getString("numeroCasa"));
+                endereco.setNumeroCasa(rs.getString("numerocasa"));
                 
                 lista.add(endereco);
             }
